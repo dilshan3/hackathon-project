@@ -3,8 +3,12 @@ name: Deploy to Vercel
 on:
   push:
     branches: [ main, develop ]
+    paths:
+      - 'backend/**'
   pull_request:
     branches: [ main, develop ]
+    paths:
+      - 'backend/**'
 
 jobs:
   test:
@@ -23,20 +27,26 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: 'backend/package-lock.json'
     
     - name: Install dependencies
+      working-directory: ./backend
       run: npm ci
     
     - name: Run linting
+      working-directory: ./backend
       run: npm run lint
     
     - name: Run type checking
+      working-directory: ./backend
       run: npm run type-check
     
     - name: Run tests
+      working-directory: ./backend
       run: npm test
     
     - name: Build project
+      working-directory: ./backend
       run: npm run build
 
   deploy:
@@ -53,11 +63,14 @@ jobs:
       with:
         node-version: '18.x'
         cache: 'npm'
+        cache-dependency-path: 'backend/package-lock.json'
     
     - name: Install dependencies
+      working-directory: ./backend
       run: npm ci
     
     - name: Build project
+      working-directory: ./backend
       run: npm run build
     
     - name: Deploy to Vercel
@@ -66,5 +79,5 @@ jobs:
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-        working-directory: ./
+        working-directory: ./backend
         vercel-args: '--prod'
