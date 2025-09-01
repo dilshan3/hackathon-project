@@ -5,7 +5,7 @@ on:
     branches: [ main, develop ]
     paths:
       - 'backend/**'
-      - 'github/**'
+      - '.github/**'
   pull_request:
     branches: [ main, develop ]
     paths:
