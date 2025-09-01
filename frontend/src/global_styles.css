@@ -9,39 +9,157 @@
 
 html, body {
   height: 100%;
-  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  font-family: 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 body {
-  background-color: #fafafa;
-  color: #333;
+  background-color: #0f1419;
+  color: #ffffff;
   line-height: 1.6;
 }
 
 /* Custom Material Theme Overrides */
 .mat-mdc-raised-button.mat-primary {
-  --mdc-protected-button-container-color: #4CAF50;
-  --mdc-protected-button-label-text-color: white;
+  --mdc-protected-button-container-color: #00d26a;
+  --mdc-protected-button-label-text-color: #000000;
+  border-radius: 25px;
+  font-weight: 600;
+  text-transform: none;
 }
 
 .mat-mdc-outlined-button.mat-primary {
-  --mdc-outlined-button-outline-color: #4CAF50;
-  --mdc-outlined-button-label-text-color: #4CAF50;
+  --mdc-outlined-button-outline-color: #00d26a;
+  --mdc-outlined-button-label-text-color: #00d26a;
+  border-radius: 25px;
+  font-weight: 600;
+  text-transform: none;
 }
 
 .mat-mdc-button.mat-primary {
-  --mdc-text-button-label-text-color: #4CAF50;
+  --mdc-text-button-label-text-color: #00d26a;
+  border-radius: 25px;
+  font-weight: 600;
+  text-transform: none;
+}
+
+/* Dark theme card styles */
+.mat-mdc-card {
+  background-color: #1e2328;
+  border: 1px solid #2d3439;
+  border-radius: 12px;
+  color: #ffffff;
+}
+
+.mat-mdc-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 210, 106, 0.15);
+  border-color: #00d26a;
 }
 
 /* Form Field Customizations */
-.mat-mdc-form-field.mat-focused .mat-mdc-form-field-focus-overlay {
-  background-color: rgba(76, 175, 80, 0.12);
+.mat-mdc-form-field {
+  --mdc-filled-text-field-container-color: #1e2328;
+  --mdc-filled-text-field-label-text-color: #9ca3af;
+  --mdc-filled-text-field-input-text-color: #ffffff;
+}
+
+.mat-mdc-form-field.mat-focused {
+  --mdc-filled-text-field-focus-label-text-color: #00d26a;
+  --mdc-filled-text-field-focus-active-indicator-color: #00d26a;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-focus-overlay {
+  background-color: rgba(0, 210, 106, 0.12);
 }
 
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
-  border-color: #4CAF50;
+  border-color: #00d26a;
+}
+
+/* Input field styling */
+.mat-mdc-input-element {
+  color: #ffffff !important;
+}
+
+.mat-mdc-form-field-appearance-fill .mat-mdc-form-field-flex {
+  background-color: #1e2328;
+  border-radius: 8px;
+}
+
+/* Snackbar Customizations */
+.success-snackbar {
+  --mdc-snackbar-container-color: #00d26a;
+  --mdc-snackbar-supporting-text-color: #000000;
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: #ef4444;
+  --mdc-snackbar-supporting-text-color: white;
+}
+
+.warning-snackbar {
+  --mdc-snackbar-container-color: #f59e0b;
+  --mdc-snackbar-supporting-text-color: #000000;
+}
+
+/* Status Badge Colors */
+.condition-new { 
+  background-color: rgba(0, 210, 106, 0.2) !important; 
+  color: #00d26a !important; 
+  border: 1px solid #00d26a;
+}
+.condition-good { 
+  background-color: rgba(59, 130, 246, 0.2) !important; 
+  color: #3b82f6 !important; 
+  border: 1px solid #3b82f6;
+}
+.condition-fair { 
+  background-color: rgba(245, 158, 11, 0.2) !important; 
+  color: #f59e0b !important; 
+  border: 1px solid #f59e0b;
+}
+.condition-poor { 
+  background-color: rgba(239, 68, 68, 0.2) !important; 
+  color: #ef4444 !important; 
+  border: 1px solid #ef4444;
+}
+
+.status-available { 
+  background-color: rgba(0, 210, 106, 0.2) !important; 
+  color: #00d26a !important; 
+  border: 1px solid #00d26a;
+}
+.status-lent { 
+  background-color: rgba(245, 158, 11, 0.2) !important; 
+  color: #f59e0b !important; 
+  border: 1px solid #f59e0b;
+}
+.status-not_available { 
+  background-color: rgba(239, 68, 68, 0.2) !important; 
+  color: #ef4444 !important; 
+  border: 1px solid #ef4444;
+}
+
+.status-pending { 
+  background-color: rgba(245, 158, 11, 0.2) !important; 
+  color: #f59e0b !important; 
+  border: 1px solid #f59e0b;
+}
+.status-approved { 
+  background-color: rgba(0, 210, 106, 0.2) !important; 
+  color: #00d26a !important; 
+  border: 1px solid #00d26a;
+}
+.status-declined { 
+  background-color: rgba(239, 68, 68, 0.2) !important; 
+  color: #ef4444 !important; 
+  border: 1px solid #ef4444;
+}
+.status-completed { 
+  background-color: rgba(59, 130, 246, 0.2) !important; 
+  color: #3b82f6 !important; 
+  border: 1px solid #3b82f6;
 }
 
 /* Utility Classes */
@@ -77,6 +195,42 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 48px;
+  color: #666;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 48px;
+  text-align: center;
+  color: #666;
+}
+
+.empty-state .empty-icon {
+  font-size: 4rem;
+  width: 4rem;
+  height: 4rem;
+  color: #ccc;
+}
+
+.empty-state h3 {
+  margin: 0;
+  color: #333;
+}
+
+/* Card Hover Effects */
+.mat-mdc-card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
 }
 
 /* Responsive Design */

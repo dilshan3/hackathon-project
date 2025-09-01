@@ -6,12 +6,13 @@ import { Router } from '@angular/router';
 import { AuthResponse } from '../models/auth-response.model';
 import { LoginRequest, RegisterRequest, UpdateProfileRequest } from '../models/auth-request.model';
 import { Me, User } from '../models/user.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_BASE_URL = 'http://localhost:3000/api';
+  private readonly API_BASE_URL = `${environment.apiUrl}/api`;
   private readonly TOKEN_KEY = 'readloop_token';
   private readonly USER_KEY = 'readloop_user';
   
@@ -51,6 +52,30 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.API_BASE_URL}/auth/login`, request)
       .pipe(
         tap(response => this.handleAuthSuccess(response)),
+        catchError(this.handleError)
+      );
+  }
+
+  forgotPassword(email: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.API_BASE_URL}/auth/forgot-password`, { email })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  resetPassword(token: string, password: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.API_BASE_URL}/auth/reset-password`, { 
+      token, 
+      password 
+    })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  validateResetToken(token: string): Observable<{ valid: boolean }> {
+    return this.http.post<{ valid: boolean }>(`${this.API_BASE_URL}/auth/validate-reset-token`, { token })
+      .pipe(
         catchError(this.handleError)
       );
   }
