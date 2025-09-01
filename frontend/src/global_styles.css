@@ -49,6 +49,45 @@ body {
   line-height: 1.6;
 }
 
+/* Preferences Dialog Styles */
+.preferences-dialog .mat-mdc-dialog-container {
+  padding: 0 !important;
+  overflow: hidden !important;
+  max-height: 90vh !important;
+}
+
+.preferences-dialog .mat-mdc-dialog-surface {
+  padding: 0 !important;
+  border-radius: 12px !important;
+  background-color: var(--bg-secondary) !important;
+}
+
+/* Custom scrollbar for all elements */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-primary) var(--bg-tertiary);
+}
+
 /* Material Theme Dark Mode Overrides */
 .mat-mdc-dialog-container {
   background-color: var(--bg-secondary) !important;

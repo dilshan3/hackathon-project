@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RequestService } from '../../../services/request.service';
+import { WebhookService } from '../../../services/webhook.service';
 import { Book } from '../../../models/book.model';
 
 @Component({
@@ -110,37 +111,37 @@ import { Book } from '../../../models/book.model';
   `,
   styles: [`
     :host {
-      background-color: #1e2328;
-      color: #ffffff;
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
     }
 
     h2[mat-dialog-title] {
-      color: #ffffff !important;
+      color: var(--text-primary) !important;
       font-weight: 600;
       margin-bottom: 0;
     }
 
     .book-info {
       padding: 16px 0;
-      border-bottom: 1px solid #2d3439;
+      border-bottom: 1px solid var(--border-primary);
       margin-bottom: 20px;
       background-color: transparent;
     }
 
     .book-info h3 {
       margin: 0 0 8px 0;
-      color: #ffffff;
+      color: var(--text-primary);
       font-weight: 600;
     }
 
     .book-info p {
       margin: 0 0 4px 0;
-      color: #9ca3af;
+      color: var(--text-secondary);
     }
 
     .owner-info {
       font-weight: 500;
-      color: #00d26a;
+      color: var(--accent-primary);
     }
 
     .form-field {
@@ -154,7 +155,7 @@ import { Book } from '../../../models/book.model';
     mat-dialog-content {
       max-height: 400px;
       overflow-y: auto;
-      color: #ffffff;
+      color: var(--text-primary);
       background-color: transparent;
     }
 
@@ -164,28 +165,28 @@ import { Book } from '../../../models/book.model';
       gap: 12px;
       padding: 16px 0;
       background-color: transparent;
-      border-top: 1px solid #2d3439;
+      border-top: 1px solid var(--border-primary);
     }
 
     mat-dialog-actions button[mat-button] {
-      color: #9ca3af !important;
+      color: var(--text-secondary) !important;
       border-radius: 6px;
     }
 
     mat-dialog-actions button[mat-button]:hover {
-      color: #ffffff !important;
+      color: var(--text-primary) !important;
       background-color: rgba(255, 255, 255, 0.1);
     }
 
     mat-dialog-actions button[mat-raised-button] {
-      background: #00d26a !important;
+      background: var(--accent-primary) !important;
       color: #000000 !important;
       border-radius: 6px;
     }
 
     mat-dialog-actions button[mat-raised-button]:disabled {
-      background: #2d3439 !important;
-      color: #6b7280 !important;
+      background: var(--bg-tertiary) !important;
+      color: var(--text-disabled) !important;
     }
 
     mat-spinner {
@@ -195,42 +196,42 @@ import { Book } from '../../../models/book.model';
 
     /* Datepicker styling for dark theme */
     ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-form-field-focus-overlay {
-      background-color: rgba(0, 210, 106, 0.12);
+      background-color: rgba(74, 222, 128, 0.12);
     }
 
     ::ng-deep .mat-datepicker-toggle {
-      color: #9ca3af;
+      color: var(--text-muted);
     }
 
     ::ng-deep .mat-mdc-form-field.mat-focused .mat-datepicker-toggle {
-      color: #00d26a;
+      color: var(--accent-primary);
     }
 
     /* Ensure form field labels and hints are visible */
     ::ng-deep .mat-mdc-form-field .mat-mdc-form-field-label {
-      color: #9ca3af;
+      color: var(--text-muted);
     }
 
     ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-form-field-label {
-      color: #00d26a !important;
+      color: var(--accent-primary) !important;
     }
 
     ::ng-deep .mat-mdc-form-field .mat-mdc-form-field-hint {
-      color: #9ca3af;
+      color: var(--text-muted);
     }
 
     /* Input field text */
     ::ng-deep .mat-mdc-input-element {
-      color: #ffffff !important;
+      color: var(--text-primary) !important;
     }
 
     ::ng-deep .mat-mdc-input-element::placeholder {
-      color: #6b7280 !important;
+      color: var(--text-disabled) !important;
     }
 
     /* Textarea */
     ::ng-deep textarea.mat-mdc-input-element {
-      color: #ffffff !important;
+      color: var(--text-primary) !important;
     }
   `]
 })
@@ -242,6 +243,7 @@ export class CreateRequestComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private requestService: RequestService,
+    private webhookService: WebhookService,
     private snackBar: MatSnackBar,
     private dialogRef: MatDialogRef<CreateRequestComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { book: Book }
@@ -278,6 +280,8 @@ export class CreateRequestComponent implements OnInit {
 
       this.requestService.createRequest(requestData).subscribe({
         next: (request) => {
+          // Send webhook notification
+          this.sendWebhookNotification(request, formValue);
           this.dialogRef.close(request);
         },
         error: (error) => {
@@ -300,6 +304,30 @@ export class CreateRequestComponent implements OnInit {
 
   onCancel(): void {
     this.dialogRef.close();
+  }
+
+  private sendWebhookNotification(request: any, formValue: any): void {
+    // Send webhook notification about the new book request
+    const webhookData = {
+      bookId: this.data.book.id,
+      bookTitle: this.data.book.title,
+      requesterId: request.requesterId || 'current-user', // You might need to get this from auth service
+      requesterName: 'Current User', // You might need to get this from auth service
+      ownerId: this.data.book.ownerId,
+      ownerName: this.data.book.owner?.displayName || 'Book Owner',
+      startDate: formValue.startDate.toISOString().split('T')[0],
+      durationDays: formValue.durationDays
+    };
+
+    this.webhookService.sendBookRequestEvent(webhookData).subscribe({
+      next: (response) => {
+        console.log('Webhook notification sent successfully:', response);
+      },
+      error: (error) => {
+        console.error('Failed to send webhook notification:', error);
+        // Don't show error to user as webhook is optional
+      }
+    });
   }
 
   private formatDate(date: Date): string {
