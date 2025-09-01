@@ -1,246 +1,220 @@
-# ReadLoop - Community Book Sharing Platform
+# ReadLoop Regression Test Suite
 
-A modern, community-driven book sharing and marketplace application that enables users to share, request, and trade books within local communities while promoting sustainable reading practices.
+This repository contains comprehensive regression test cases for the ReadLoop application using Playwright with JavaScript.
 
-## 🚀 Project Status
+## Test Environment
 
-### ✅ MVP 0 - Foundations (COMPLETED)
-- **Backend**: Fully implemented with Node.js/TypeScript
-- **Authentication**: JWT-based auth system
-- **Database**: Neon PostgreSQL schema ready
-- **API**: Core endpoints implemented
-- **Security**: Comprehensive security measures
-- **Deployment**: Vercel-ready configuration
+- **Application URL**: https://frontend-ten-topaz-ykmk7ren3l.vercel.app/
+- **Test User**: johndoe@email.com
+- **Password**: Test@1234
 
-### 🔄 MVP 1 - Core Share Loop (In Progress)
-- Book management and discovery
-- Request lifecycle management
-- Search and filtering capabilities
+## Test Cases Overview
 
-### 📋 MVP 1.1 - Quality of Life (Planned)
-- In-app messaging
-- Email notifications
-- Enhanced user experience
+The test suite includes 10 comprehensive regression test cases:
 
-## 🛠 Technology Stack
+1. **RT001**: Login and Session Persistence After System Updates
+2. **RT002**: Book Search and Filter Functionality After Database Changes
+3. **RT003**: Book Management CRUD Operations After API Changes
+4. **RT004**: Dashboard Statistics and Data Aggregation After Backend Updates
+5. **RT005**: Request Management Workflow After Status Logic Updates
+6. **RT006**: User Profile and Authentication State After Security Updates
+7. **RT007**: Navigation and UI State Management After Frontend Updates
+8. **RT008**: Data Persistence and Synchronization After Database Migration
+9. **RT009**: Form Validation and Submission After Validation Rule Changes
+10. **RT010**: End-to-End Book Sharing Workflow After Integration Updates
 
-### Backend
-- **Runtime**: Node.js 18+ LTS
-- **Framework**: Express.js with TypeScript
-- **Database**: Neon (Serverless PostgreSQL)
-- **Authentication**: JWT + bcryptjs
-- **Validation**: Joi schema validation
-- **Security**: Helmet, CORS, rate limiting
-- **Deployment**: Vercel serverless functions
+## Prerequisites
 
-### Frontend (Planned)
-- **Framework**: Angular 17+
-- **UI Library**: Angular Material
-- **State Management**: NgRx
-- **Testing**: Jasmine, Karma, Cypress
+- Node.js (version 16 or higher)
+- npm or yarn package manager
 
-### DevOps
-- **Version Control**: GitHub
-- **CI/CD**: GitHub Actions
-- **Database**: Neon PostgreSQL
-- **Deployment**: Vercel
+## Installation
 
-## 📁 Project Structure
+1. Clone or download this repository
+2. Navigate to the project directory
+3. Install dependencies:
 
-```
-hackathon-project/
-├── backend/              # ✅ Node.js/TypeScript Backend
-│   ├── src/             # Source code
-│   ├── package.json     # Dependencies
-│   ├── tsconfig.json    # TypeScript config
-│   ├── vercel.json      # Vercel deployment
-│   └── README.md        # Backend documentation
-├── frontend/            # 🔄 Angular Frontend (Planned)
-├── docs/               # 📚 Project documentation
-└── ReadMe.md           # This file
-```
-
-## 🚀 Quick Start
-
-### Backend Setup
-
-1. **Navigate to backend directory**:
-   ```bash
-   cd backend
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**:
-   ```bash
-   cp env.example .env
-   # Edit .env with your configuration
-   ```
-
-4. **Set up database**:
-   ```bash
-   # Connect to your Neon database and run:
-   psql $DATABASE_URL -f src/database/schema.sql
-   ```
-
-5. **Start development server**:
-   ```bash
-   npm run dev
-   ```
-
-6. **Run tests**:
-   ```bash
-   npm test
-   ```
-
-### Frontend Setup (Coming Soon)
-
-1. **Navigate to frontend directory**:
-   ```bash
-   cd frontend
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Start development server**:
-   ```bash
-   npm start
-   ```
-
-## 📚 API Documentation
-
-### MVP 0 Endpoints
-
-#### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User authentication
-
-#### User Profile
-- `GET /api/me` - Get current user profile
-- `PUT /api/me` - Update user profile
-
-#### Health Check
-- `GET /healthz` - Application health status
-
-### API Response Format
-
-#### Success Response
-```json
-{
-  "id": "uuid",
-  "email": "user@example.com",
-  "displayName": "John Doe",
-  "city": "Colombo",
-  "createdAt": "2025-09-01T09:10:00Z"
-}
-```
-
-#### Error Response
-```json
-{
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "Validation failed",
-    "details": {
-      "email": "Email must be valid"
-    }
-  }
-}
-```
-
-## 🔒 Security Features
-
-- **JWT Authentication**: Secure token-based authentication
-- **Password Hashing**: bcrypt with 12 rounds
-- **Input Validation**: Joi schema validation
-- **Rate Limiting**: 100 requests per 15 minutes
-- **CORS Protection**: Configurable cross-origin requests
-- **Security Headers**: Helmet middleware
-- **SQL Injection Protection**: Parameterized queries
-
-## 🚀 Deployment
-
-### Backend (Vercel)
-1. Connect GitHub repository to Vercel
-2. Set environment variables in Vercel dashboard
-3. Deploy automatically on push
-
-### Frontend (Coming Soon)
-1. Build Angular application
-2. Deploy to Vercel or similar platform
-
-## 🧪 Testing
-
-### Backend Tests
 ```bash
-cd backend
-npm test          # Run all tests
-npm run build     # Build for production
-npm run lint      # Code quality check
+npm install
 ```
 
-### Frontend Tests (Coming Soon)
+4. Install Playwright browsers:
+
 ```bash
-cd frontend
-npm test          # Unit tests
-npm run e2e       # End-to-end tests
+npm run install-browsers
 ```
 
-## 📈 Performance
+## Running Tests
 
-- **Database**: Optimized queries with indexes
-- **API**: Response compression and caching
-- **Security**: Efficient authentication and validation
-- **Scalability**: Serverless architecture ready
+### Run All Tests
 
-## 🤝 Contributing
+```bash
+npm test
+```
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Ensure all tests pass
-6. Submit a pull request
+### Run Tests with UI Mode (Interactive)
 
-## 📄 License
+```bash
+npm run test:ui
+```
 
-This project is licensed under the MIT License.
+### Run Tests in Headed Mode (Visible Browser)
 
-## 🆘 Support
+```bash
+npm run test:headed
+```
 
-For support and questions:
-- Create an issue in the GitHub repository
-- Check the documentation in each directory
-- Review the API documentation
+### Run Tests in Debug Mode
 
-## 🎯 Roadmap
+```bash
+npm run test:debug
+```
 
-### Completed ✅
-- [x] MVP 0: Backend foundations
-- [x] Authentication system
-- [x] Database schema
-- [x] API endpoints
-- [x] Security measures
-- [x] Vercel deployment setup
+### Run Specific Test File
 
-### In Progress 🔄
-- [ ] MVP 1: Book management
-- [ ] Search and discovery
-- [ ] Request lifecycle
+```bash
+npx playwright test tests/RT001-login-session-persistence.spec.js
+```
 
-### Planned 📋
-- [ ] MVP 1.1: Messaging and notifications
-- [ ] Frontend implementation
-- [ ] AI-powered recommendations
-- [ ] Community features
-- [ ] Mobile app support
+### Run Tests on Specific Browser
 
----
+```bash
+npx playwright test --project=chromium
+npx playwright test --project=firefox
+npx playwright test --project=webkit
+```
 
-**Status**: 🚀 MVP 0 Complete - Ready for MVP 1 Development
+## Test Reports
+
+After running tests, you can view the HTML report:
+
+```bash
+npm run report
+```
+
+The report will be available at `playwright-report/index.html`
+
+## Test Configuration
+
+The test configuration is defined in `playwright.config.js`:
+
+- **Base URL**: https://frontend-ten-topaz-ykmk7ren3l.vercel.app/
+- **Test Directory**: `./tests`
+- **Browsers**: Chromium, Firefox, WebKit
+- **Retries**: 2 retries on CI, 0 on local
+- **Parallel Execution**: Enabled
+- **Screenshots**: On failure
+- **Videos**: On failure
+- **Traces**: On first retry
+
+## Test Structure
+
+```
+tests/
+├── utils/
+│   └── test-utils.js          # Shared utilities and configuration
+├── RT001-login-session-persistence.spec.js
+├── RT002-book-search-filter.spec.js
+├── RT003-book-management-crud.spec.js
+├── RT004-dashboard-statistics.spec.js
+├── RT005-request-management.spec.js
+├── RT006-user-profile-auth.spec.js
+├── RT007-navigation-ui-state.spec.js
+├── RT008-data-persistence-sync.spec.js
+├── RT009-form-validation.spec.js
+└── RT010-end-to-end-workflow.spec.js
+```
+
+## Test Data
+
+Test data is configured in `tests/utils/test-utils.js`:
+
+- Test user credentials
+- Sample book data for testing
+- Helper functions for common operations
+
+## Key Features Tested
+
+### Authentication & Session Management
+- Login/logout functionality
+- Session persistence
+- User authentication state
+
+### Book Management
+- Add, edit, delete books
+- Book search and filtering
+- Book status management
+
+### Request Management
+- Create and manage book requests
+- Request status updates
+- Owner and requester views
+
+### Dashboard & Statistics
+- Dashboard statistics accuracy
+- Data aggregation
+- Recent activity tracking
+
+### User Interface
+- Navigation functionality
+- Form validation
+- Responsive design
+- UI state management
+
+### Data Integrity
+- Data synchronization across views
+- Consistency checks
+- Error handling
+
+## Continuous Integration
+
+The test suite is configured for CI environments:
+
+- Automatic retry on failure
+- Parallel test execution
+- Comprehensive reporting
+- Cross-browser testing
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Browser Installation**: If browsers are not installed, run:
+   ```bash
+   npm run install-browsers
+   ```
+
+2. **Network Issues**: Ensure stable internet connection for accessing the test application
+
+3. **Test Failures**: Check the HTML report for detailed failure information and screenshots
+
+4. **Timeout Issues**: Increase timeout values in `playwright.config.js` if needed
+
+### Debug Mode
+
+Use debug mode to step through tests:
+
+```bash
+npm run test:debug
+```
+
+This will open Playwright Inspector for interactive debugging.
+
+## Contributing
+
+When adding new tests:
+
+1. Follow the existing naming convention
+2. Use appropriate test IDs and selectors
+3. Include proper error handling
+4. Add comprehensive assertions
+5. Update this README if needed
+
+## Support
+
+For issues or questions regarding the test suite, please refer to:
+
+- Playwright documentation: https://playwright.dev/
+- Test reports generated after test execution
+- Console output for detailed error messages
+

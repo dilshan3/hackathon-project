@@ -1,0 +1,29 @@
+{
+  "name": "readloop-tests",
+  "version": "1.0.0",
+  "description": "Regression test suite for ReadLoop application",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "install-browsers": "playwright install",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "testing",
+    "regression",
+    "readloop"
+  ],
+  "author": "Test Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.55.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
+
