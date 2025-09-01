@@ -25,3 +25,19 @@ export interface CreateRequestRequest {
   durationDays: number;
   note?: string;
 }
+
+export interface Message {
+  id: string;
+  requestId: string;
+  senderId: string;
+  body: string;
+  createdAt: string;
+}
+
+export interface MessagesResponse {
+  items: Message[];
+}
+
+export interface SendMessageRequest {
+  body: string;
+}
