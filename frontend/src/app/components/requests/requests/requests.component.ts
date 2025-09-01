@@ -122,6 +122,11 @@ import { Paged } from '../../../models/common.model';
                         View Details
                       </button>
 
+                      <button mat-button [routerLink]="['/requests', request.id]" [queryParams]="{tab: 'messages'}">
+                        <mat-icon>chat</mat-icon>
+                        Messages
+                      </button>
+
                       <ng-container *ngIf="request.status === 'PENDING'">
                         <button mat-button color="primary" (click)="approveRequest(request)">
                           <mat-icon>check</mat-icon>
@@ -239,6 +244,11 @@ import { Paged } from '../../../models/common.model';
                         View Details
                       </button>
 
+                      <button mat-button [routerLink]="['/requests', request.id]" [queryParams]="{tab: 'messages'}">
+                        <mat-icon>chat</mat-icon>
+                        Messages
+                      </button>
+
                       <ng-container *ngIf="request.status === 'APPROVED'">
                         <button mat-raised-button color="accent" (click)="completeRequest(request)">
                           <mat-icon>done_all</mat-icon>
@@ -270,6 +280,8 @@ import { Paged } from '../../../models/common.model';
       padding: 24px;
       max-width: 1200px;
       margin: 0 auto;
+      background-color: #0f1419;
+      min-height: 100vh;
     }
 
     .header {
@@ -278,18 +290,57 @@ import { Paged } from '../../../models/common.model';
 
     .header h1 {
       margin: 0 0 8px 0;
-      color: #333;
+      color: #ffffff;
       font-size: 2rem;
     }
 
     .subtitle {
       margin: 0;
-      color: #666;
+      color: #9ca3af;
       font-size: 1rem;
     }
 
+    /* Tab styling for dark theme */
+    ::ng-deep .mat-mdc-tab-group {
+      background-color: transparent;
+    }
+
+    ::ng-deep .mat-mdc-tab-header {
+      background-color: #1e2328;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid #2d3439;
+      border-bottom: none;
+    }
+
+    ::ng-deep .mat-mdc-tab-label {
+      color: #9ca3af !important;
+      font-weight: 500;
+      min-width: 160px;
+      font-size: 1rem;
+    }
+
+    ::ng-deep .mat-mdc-tab-label.mdc-tab--active {
+      color: #ffffff !important;
+    }
+
+    ::ng-deep .mat-mdc-tab-label:hover {
+      color: #ffffff !important;
+    }
+
+    ::ng-deep .mdc-tab-indicator__content--underline {
+      background-color: #00d26a !important;
+      height: 3px;
+    }
+
+    ::ng-deep .mat-mdc-tab-body-wrapper {
+      background-color: #1e2328;
+      border: 1px solid #2d3439;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+    }
+
     .tab-content {
-      padding: 24px 0;
+      padding: 24px;
     }
 
     .filters {
@@ -310,24 +361,30 @@ import { Paged } from '../../../models/common.model';
       gap: 16px;
       padding: 48px;
       text-align: center;
-      color: #666;
+      color: #9ca3af;
     }
 
     .empty-icon {
       font-size: 3rem;
       width: 3rem;
       height: 3rem;
-      color: #ccc;
+      color: #6b7280;
     }
 
     .empty-state h3 {
       margin: 0;
-      color: #333;
+      color: #ffffff;
+    }
+
+    .empty-state button {
+      background-color: #00d26a !important;
+      color: #000000 !important;
+      margin-top: 16px;
     }
 
     .requests-stats {
       margin-bottom: 16px;
-      color: #666;
+      color: #9ca3af;
       font-weight: 500;
     }
 
@@ -338,12 +395,19 @@ import { Paged } from '../../../models/common.model';
     }
 
     .request-card {
+      background-color: #16191d !important;
+      border: 1px solid #2d3439;
       transition: transform 0.2s ease-in-out;
     }
 
     .request-card:hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      border-color: #00d26a;
+    }
+
+    .request-card mat-card-content {
+      background-color: transparent;
     }
 
     .request-header {
@@ -356,15 +420,20 @@ import { Paged } from '../../../models/common.model';
 
     .book-info h3 {
       margin: 0 0 8px 0;
-      color: #333;
+      color: #ffffff;
       font-size: 1.25rem;
     }
 
     .requester-info,
     .owner-info {
       margin: 0;
-      color: #666;
+      color: #9ca3af;
       font-size: 0.875rem;
+    }
+
+    .requester-info strong,
+    .owner-info strong {
+      color: #00d26a;
     }
 
     .request-details {
@@ -378,7 +447,7 @@ import { Paged } from '../../../models/common.model';
       display: flex;
       align-items: center;
       gap: 6px;
-      color: #666;
+      color: #9ca3af;
       font-size: 0.875rem;
     }
 
@@ -386,7 +455,7 @@ import { Paged } from '../../../models/common.model';
       font-size: 1rem;
       width: 1rem;
       height: 1rem;
-      color: #999;
+      color: #6b7280;
     }
 
     .request-note {
@@ -394,13 +463,14 @@ import { Paged } from '../../../models/common.model';
       gap: 8px;
       margin-top: 16px;
       padding: 12px;
-      background: #f5f5f5;
+      background: #0f1419;
       border-radius: 8px;
-      border-left: 4px solid #4CAF50;
+      border-left: 4px solid #00d26a;
+      border: 1px solid #2d3439;
     }
 
     .request-note mat-icon {
-      color: #4CAF50;
+      color: #00d26a;
       font-size: 1.2rem;
       width: 1.2rem;
       height: 1.2rem;
@@ -409,34 +479,74 @@ import { Paged } from '../../../models/common.model';
 
     .request-note p {
       margin: 0;
-      color: #333;
+      color: #ffffff;
       font-style: italic;
       flex: 1;
     }
 
+    /* Status chip styling for dark theme */
     .status-pending { 
-      background-color: #fff3e0 !important; 
-      color: #f57c00 !important; 
+      background-color: #fbbf24 !important; 
+      color: #000000 !important; 
+      border: 1px solid #f59e0b;
     }
     .status-approved { 
-      background-color: #e8f5e8 !important; 
-      color: #2e7d32 !important; 
+      background-color: #00d26a !important; 
+      color: #000000 !important; 
+      border: 1px solid #00a855;
     }
     .status-declined { 
-      background-color: #ffebee !important; 
-      color: #d32f2f !important; 
+      background-color: #ef4444 !important; 
+      color: #ffffff !important; 
+      border: 1px solid #dc2626;
     }
     .status-completed { 
-      background-color: #e3f2fd !important; 
-      color: #1976d2 !important; 
+      background-color: #3b82f6 !important; 
+      color: #ffffff !important; 
+      border: 1px solid #2563eb;
     }
 
     mat-card-actions {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      border-top: 1px solid #e0e0e0;
+      border-top: 1px solid #2d3439;
       padding: 16px 24px;
+      background-color: transparent;
+    }
+
+    mat-card-actions button {
+      border-radius: 6px;
+    }
+
+    mat-card-actions button[mat-button] {
+      color: #9ca3af !important;
+    }
+
+    mat-card-actions button[mat-button]:hover {
+      color: #ffffff !important;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    mat-card-actions button[color="primary"] {
+      color: #00d26a !important;
+    }
+
+    mat-card-actions button[color="primary"]:hover {
+      background-color: rgba(0, 210, 106, 0.1);
+    }
+
+    mat-card-actions button[color="warn"] {
+      color: #ef4444 !important;
+    }
+
+    mat-card-actions button[color="warn"]:hover {
+      background-color: rgba(239, 68, 68, 0.1);
+    }
+
+    mat-card-actions button[mat-raised-button] {
+      background-color: #00d26a !important;
+      color: #000000 !important;
     }
 
     mat-card-actions button mat-icon {
@@ -448,9 +558,23 @@ import { Paged } from '../../../models/common.model';
 
     mat-paginator {
       margin-top: 24px;
-      background: white;
+      background: #1e2328;
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      border: 1px solid #2d3439;
+    }
+
+    ::ng-deep .mat-mdc-paginator {
+      background-color: #1e2328;
+      color: #ffffff;
+    }
+
+    ::ng-deep .mat-mdc-paginator .mat-mdc-button {
+      color: #9ca3af;
+    }
+
+    ::ng-deep .mat-mdc-paginator .mat-mdc-button:hover {
+      color: #ffffff;
     }
 
     @media (max-width: 768px) {
@@ -479,6 +603,11 @@ import { Paged } from '../../../models/common.model';
 
       mat-card-actions button {
         width: 100%;
+      }
+
+      ::ng-deep .mat-mdc-tab-label {
+        min-width: 120px;
+        font-size: 0.9rem;
       }
     }
   `]

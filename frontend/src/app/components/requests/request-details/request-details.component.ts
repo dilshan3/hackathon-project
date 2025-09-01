@@ -8,12 +8,15 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTabsModule } from '@angular/material/tabs';
 import { Subject, takeUntil } from 'rxjs';
 import { RequestService } from '../../../services/request.service';
 import { CounterService } from '../../../services/counter.service';
 import { AuthService } from '../../../services/auth.service';
+import { MessageService } from '../../../services/message.service';
 import { BookRequest } from '../../../models/request.model';
 import { User } from '../../../models/user.model';
+import { MessageThreadComponent } from '../../messages/message-thread/message-thread.component';
 
 @Component({
   selector: 'app-request-details',
@@ -27,7 +30,9 @@ import { User } from '../../../models/user.model';
     MatChipsModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTabsModule,
+    MessageThreadComponent
   ],
   template: `
     <div class="request-details-container">
@@ -53,168 +58,184 @@ import { User } from '../../../models/user.model';
       </div>
 
       <div *ngIf="!isLoading && request" class="request-content">
-        <mat-card class="request-card">
-          <mat-card-header>
-            <div class="header-content">
-              <div class="book-info">
-                <mat-card-title>{{ request.book?.title }}</mat-card-title>
-                <mat-card-subtitle *ngIf="request.book?.author">
-                  by {{ request.book?.author }}
-                </mat-card-subtitle>
+        <mat-tab-group class="request-tabs" [(selectedIndex)]="selectedTabIndex">
+          <mat-tab label="Request Details">
+            <ng-template matTabContent>
+              <mat-card class="request-card">
+                <mat-card-header>
+                  <div class="header-content">
+                    <div class="book-info">
+                      <mat-card-title>{{ request.book?.title }}</mat-card-title>
+                      <mat-card-subtitle *ngIf="request.book?.author">
+                        by {{ request.book?.author }}
+                      </mat-card-subtitle>
+                    </div>
+                    <mat-chip [class]="'status-' + request.status.toLowerCase()" class="status-chip">
+                      {{ request.status }}
+                    </mat-chip>
+                  </div>
+                </mat-card-header>
+
+                <mat-card-content>
+                  <div class="request-info">
+                    <div class="info-section">
+                      <h3>Participants</h3>
+                      <div class="participants">
+                        <div class="participant">
+                          <mat-icon>account_circle</mat-icon>
+                          <div class="participant-info">
+                            <p class="name">{{ request.owner?.displayName }}</p>
+                            <p class="role">Book Owner</p>
+                            <p class="location" *ngIf="request.owner?.city">
+                              <mat-icon>location_on</mat-icon>
+                              {{ request.owner?.city }}
+                            </p>
+                          </div>
+                        </div>
+
+                        <mat-icon class="arrow-icon">arrow_forward</mat-icon>
+
+                        <div class="participant">
+                          <mat-icon>account_circle</mat-icon>
+                          <div class="participant-info">
+                            <p class="name">{{ request.requester?.displayName }}</p>
+                            <p class="role">Requester</p>
+                            <p class="location" *ngIf="request.requester?.city">
+                              <mat-icon>location_on</mat-icon>
+                              {{ request.requester?.city }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <mat-divider></mat-divider>
+
+                    <div class="info-section">
+                      <h3>Request Details</h3>
+                      <div class="details-grid">
+                        <div class="detail-item" *ngIf="request.startDate">
+                          <mat-icon>event</mat-icon>
+                          <div>
+                            <p class="label">Start Date</p>
+                            <p class="value">{{ request.startDate | date:'fullDate' }}</p>
+                          </div>
+                        </div>
+
+                        <div class="detail-item" *ngIf="request.durationDays">
+                          <mat-icon>schedule</mat-icon>
+                          <div>
+                            <p class="label">Duration</p>
+                            <p class="value">{{ request.durationDays }} days</p>
+                          </div>
+                        </div>
+
+                        <div class="detail-item" *ngIf="request.startDate && request.durationDays">
+                          <mat-icon>event_available</mat-icon>
+                          <div>
+                            <p class="label">Expected Return</p>
+                            <p class="value">{{ getExpectedReturnDate() | date:'fullDate' }}</p>
+                          </div>
+                        </div>
+
+                        <div class="detail-item">
+                          <mat-icon>access_time</mat-icon>
+                          <div>
+                            <p class="label">Request Created</p>
+                            <p class="value">{{ request.createdAt | date:'medium' }}</p>
+                          </div>
+                        </div>
+
+                        <div class="detail-item" *ngIf="request.updatedAt !== request.createdAt">
+                          <mat-icon>update</mat-icon>
+                          <div>
+                            <p class="label">Last Updated</p>
+                            <p class="value">{{ request.updatedAt | date:'medium' }}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <mat-divider *ngIf="request.note"></mat-divider>
+
+                    <div class="info-section" *ngIf="request.note">
+                      <h3>Requester's Note</h3>
+                      <div class="note-content">
+                        <mat-icon>message</mat-icon>
+                        <p>"{{ request.note }}"</p>
+                      </div>
+                    </div>
+
+                    <mat-divider></mat-divider>
+
+                    <div class="info-section">
+                      <h3>Status Information</h3>
+                      <div class="status-info">
+                        <div class="status-icon" [class]="'status-' + request.status.toLowerCase()">
+                          <mat-icon>{{ getStatusIcon() }}</mat-icon>
+                        </div>
+                        <div class="status-text">
+                          <p class="status-title">{{ getStatusTitle() }}</p>
+                          <p class="status-description">{{ getStatusDescription() }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-content>
+
+                <mat-card-actions class="actions">
+                  <button mat-button routerLink="/requests">
+                    <mat-icon>list</mat-icon>
+                    Back to Requests
+                  </button>
+
+                  <button mat-button [routerLink]="['/books', request.bookId]">
+                    <mat-icon>auto_stories</mat-icon>
+                    View Book
+                  </button>
+
+                  <div class="action-buttons">
+                    <ng-container *ngIf="isOwner && request.status === 'PENDING'">
+                      <button mat-button color="primary" (click)="approveRequest()">
+                        <mat-icon>check</mat-icon>
+                        Approve Request
+                      </button>
+                      <button mat-button color="warn" (click)="declineRequest()">
+                        <mat-icon>close</mat-icon>
+                        Decline Request
+                      </button>
+                    </ng-container>
+
+                    <ng-container *ngIf="(isOwner || isRequester) && request.status === 'APPROVED'">
+                      <button mat-raised-button color="accent" (click)="completeRequest()">
+                        <mat-icon>done_all</mat-icon>
+                        Mark as Complete
+                      </button>
+                    </ng-container>
+                  </div>
+                </mat-card-actions>
+              </mat-card>
+            </ng-template>
+          </mat-tab>
+
+          <mat-tab label="Messages" [disabled]="!canAccessMessages()">
+            <ng-template matTabContent>
+              <div class="messages-tab-content">
+                <app-message-thread [request]="request"></app-message-thread>
               </div>
-              <mat-chip [class]="'status-' + request.status.toLowerCase()" class="status-chip">
-                {{ request.status }}
-              </mat-chip>
-            </div>
-          </mat-card-header>
-
-          <mat-card-content>
-            <div class="request-info">
-              <div class="info-section">
-                <h3>Participants</h3>
-                <div class="participants">
-                  <div class="participant">
-                    <mat-icon>account_circle</mat-icon>
-                    <div class="participant-info">
-                      <p class="name">{{ request.owner?.displayName }}</p>
-                      <p class="role">Book Owner</p>
-                      <p class="location" *ngIf="request.owner?.city">
-                        <mat-icon>location_on</mat-icon>
-                        {{ request.owner?.city }}
-                      </p>
-                    </div>
-                  </div>
-
-                  <mat-icon class="arrow-icon">arrow_forward</mat-icon>
-
-                  <div class="participant">
-                    <mat-icon>account_circle</mat-icon>
-                    <div class="participant-info">
-                      <p class="name">{{ request.requester?.displayName }}</p>
-                      <p class="role">Requester</p>
-                      <p class="location" *ngIf="request.requester?.city">
-                        <mat-icon>location_on</mat-icon>
-                        {{ request.requester?.city }}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <mat-divider></mat-divider>
-
-              <div class="info-section">
-                <h3>Request Details</h3>
-                <div class="details-grid">
-                  <div class="detail-item" *ngIf="request.startDate">
-                    <mat-icon>event</mat-icon>
-                    <div>
-                      <p class="label">Start Date</p>
-                      <p class="value">{{ request.startDate | date:'fullDate' }}</p>
-                    </div>
-                  </div>
-
-                  <div class="detail-item" *ngIf="request.durationDays">
-                    <mat-icon>schedule</mat-icon>
-                    <div>
-                      <p class="label">Duration</p>
-                      <p class="value">{{ request.durationDays }} days</p>
-                    </div>
-                  </div>
-
-                  <div class="detail-item" *ngIf="request.startDate && request.durationDays">
-                    <mat-icon>event_available</mat-icon>
-                    <div>
-                      <p class="label">Expected Return</p>
-                      <p class="value">{{ getExpectedReturnDate() | date:'fullDate' }}</p>
-                    </div>
-                  </div>
-
-                  <div class="detail-item">
-                    <mat-icon>access_time</mat-icon>
-                    <div>
-                      <p class="label">Request Created</p>
-                      <p class="value">{{ request.createdAt | date:'medium' }}</p>
-                    </div>
-                  </div>
-
-                  <div class="detail-item" *ngIf="request.updatedAt !== request.createdAt">
-                    <mat-icon>update</mat-icon>
-                    <div>
-                      <p class="label">Last Updated</p>
-                      <p class="value">{{ request.updatedAt | date:'medium' }}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <mat-divider *ngIf="request.note"></mat-divider>
-
-              <div class="info-section" *ngIf="request.note">
-                <h3>Requester's Note</h3>
-                <div class="note-content">
-                  <mat-icon>message</mat-icon>
-                  <p>"{{ request.note }}"</p>
-                </div>
-              </div>
-
-              <mat-divider></mat-divider>
-
-              <div class="info-section">
-                <h3>Status Information</h3>
-                <div class="status-info">
-                  <div class="status-icon" [class]="'status-' + request.status.toLowerCase()">
-                    <mat-icon>{{ getStatusIcon() }}</mat-icon>
-                  </div>
-                  <div class="status-text">
-                    <p class="status-title">{{ getStatusTitle() }}</p>
-                    <p class="status-description">{{ getStatusDescription() }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </mat-card-content>
-
-          <mat-card-actions class="actions">
-            <button mat-button routerLink="/requests">
-              <mat-icon>list</mat-icon>
-              Back to Requests
-            </button>
-
-            <button mat-button [routerLink]="['/books', request.bookId]">
-              <mat-icon>auto_stories</mat-icon>
-              View Book
-            </button>
-
-            <div class="action-buttons">
-              <ng-container *ngIf="isOwner && request.status === 'PENDING'">
-                <button mat-button color="primary" (click)="approveRequest()">
-                  <mat-icon>check</mat-icon>
-                  Approve Request
-                </button>
-                <button mat-button color="warn" (click)="declineRequest()">
-                  <mat-icon>close</mat-icon>
-                  Decline Request
-                </button>
-              </ng-container>
-
-              <ng-container *ngIf="(isOwner || isRequester) && request.status === 'APPROVED'">
-                <button mat-raised-button color="accent" (click)="completeRequest()">
-                  <mat-icon>done_all</mat-icon>
-                  Mark as Complete
-                </button>
-              </ng-container>
-            </div>
-          </mat-card-actions>
-        </mat-card>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
       </div>
     </div>
   `,
   styles: [`
     .request-details-container {
       padding: 24px;
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
+      background-color: #0f1419;
+      min-height: 100vh;
     }
 
     .header {
@@ -226,11 +247,16 @@ import { User } from '../../../models/user.model';
 
     .header h1 {
       margin: 0;
-      color: #333;
+      color: #ffffff;
     }
 
     .back-button {
-      color: #666;
+      color: #9ca3af;
+    }
+
+    .back-button:hover {
+      color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.1);
     }
 
     .loading-container,
@@ -241,7 +267,7 @@ import { User } from '../../../models/user.model';
       gap: 16px;
       padding: 64px;
       text-align: center;
-      color: #666;
+      color: #9ca3af;
     }
 
     .error-icon {
@@ -251,8 +277,69 @@ import { User } from '../../../models/user.model';
       color: #f44336;
     }
 
+    .error-state h3 {
+      color: #ffffff;
+    }
+
+    .error-state button {
+      background-color: #00d26a !important;
+      color: #000000 !important;
+    }
+
+    /* Tab styling for dark theme */
+    ::ng-deep .request-tabs .mat-mdc-tab-header {
+      background-color: #1e2328;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid #2d3439;
+      border-bottom: none;
+    }
+
+    ::ng-deep .request-tabs .mat-mdc-tab-label {
+      color: #9ca3af !important;
+      font-weight: 500;
+      min-width: 160px;
+      font-size: 1rem;
+    }
+
+    ::ng-deep .request-tabs .mat-mdc-tab-label.mdc-tab--active {
+      color: #ffffff !important;
+    }
+
+    ::ng-deep .request-tabs .mat-mdc-tab-label:hover {
+      color: #ffffff !important;
+    }
+
+    ::ng-deep .request-tabs .mdc-tab-indicator__content--underline {
+      background-color: #00d26a !important;
+      height: 3px;
+    }
+
+    ::ng-deep .request-tabs .mat-mdc-tab-body-wrapper {
+      background-color: #1e2328;
+      border: 1px solid #2d3439;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .messages-tab-content {
+      padding: 0;
+    }
+
     .request-card {
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background-color: transparent !important;
+      box-shadow: none;
+      border: none;
+    }
+
+    .request-card mat-card-header {
+      background-color: transparent;
+      padding: 24px 24px 0 24px;
+    }
+
+    .request-card mat-card-content {
+      background-color: transparent;
+      color: #ffffff;
+      padding: 0 24px;
     }
 
     .header-content {
@@ -267,26 +354,38 @@ import { User } from '../../../models/user.model';
       flex: 1;
     }
 
+    .book-info mat-card-title {
+      color: #ffffff !important;
+    }
+
+    .book-info mat-card-subtitle {
+      color: #9ca3af !important;
+    }
+
     .status-chip {
       font-weight: 600;
       font-size: 0.875rem;
     }
 
     .status-pending { 
-      background-color: #fff3e0 !important; 
-      color: #f57c00 !important; 
+      background-color: #fbbf24 !important; 
+      color: #000000 !important; 
+      border: 1px solid #f59e0b;
     }
     .status-approved { 
-      background-color: #e8f5e8 !important; 
-      color: #2e7d32 !important; 
+      background-color: #00d26a !important; 
+      color: #000000 !important; 
+      border: 1px solid #00a855;
     }
     .status-declined { 
-      background-color: #ffebee !important; 
-      color: #d32f2f !important; 
+      background-color: #ef4444 !important; 
+      color: #ffffff !important; 
+      border: 1px solid #dc2626;
     }
     .status-completed { 
-      background-color: #e3f2fd !important; 
-      color: #1976d2 !important; 
+      background-color: #3b82f6 !important; 
+      color: #ffffff !important; 
+      border: 1px solid #2563eb;
     }
 
     .info-section {
@@ -295,7 +394,7 @@ import { User } from '../../../models/user.model';
 
     .info-section h3 {
       margin: 0 0 16px 0;
-      color: #333;
+      color: #ffffff;
       font-size: 1.125rem;
     }
 
@@ -311,7 +410,8 @@ import { User } from '../../../models/user.model';
       align-items: center;
       gap: 12px;
       padding: 16px;
-      background: #f9f9f9;
+      background: #16191d;
+      border: 1px solid #2d3439;
       border-radius: 8px;
       flex: 1;
       min-width: 200px;
@@ -321,24 +421,24 @@ import { User } from '../../../models/user.model';
       font-size: 2.5rem;
       width: 2.5rem;
       height: 2.5rem;
-      color: #4CAF50;
+      color: #00d26a;
     }
 
     .participant-info .name {
       margin: 0 0 4px 0;
       font-weight: 600;
-      color: #333;
+      color: #ffffff;
     }
 
     .participant-info .role {
       margin: 0 0 4px 0;
-      color: #666;
+      color: #9ca3af;
       font-size: 0.875rem;
     }
 
     .participant-info .location {
       margin: 0;
-      color: #999;
+      color: #6b7280;
       font-size: 0.8rem;
       display: flex;
       align-items: center;
@@ -352,7 +452,7 @@ import { User } from '../../../models/user.model';
     }
 
     .arrow-icon {
-      color: #ccc;
+      color: #6b7280;
       font-size: 1.5rem;
       width: 1.5rem;
       height: 1.5rem;
@@ -369,25 +469,26 @@ import { User } from '../../../models/user.model';
       align-items: flex-start;
       gap: 12px;
       padding: 16px;
-      background: #f9f9f9;
+      background: #16191d;
+      border: 1px solid #2d3439;
       border-radius: 8px;
     }
 
     .detail-item mat-icon {
-      color: #4CAF50;
+      color: #00d26a;
       margin-top: 2px;
     }
 
     .detail-item .label {
       margin: 0 0 4px 0;
-      color: #666;
+      color: #9ca3af;
       font-size: 0.875rem;
       font-weight: 500;
     }
 
     .detail-item .value {
       margin: 0;
-      color: #333;
+      color: #ffffff;
       font-weight: 600;
     }
 
@@ -395,19 +496,20 @@ import { User } from '../../../models/user.model';
       display: flex;
       gap: 12px;
       padding: 16px;
-      background: #f5f5f5;
+      background: #16191d;
+      border: 1px solid #2d3439;
       border-radius: 8px;
-      border-left: 4px solid #4CAF50;
+      border-left: 4px solid #00d26a;
     }
 
     .note-content mat-icon {
-      color: #4CAF50;
+      color: #00d26a;
       margin-top: 2px;
     }
 
     .note-content p {
       margin: 0;
-      color: #333;
+      color: #ffffff;
       font-style: italic;
       flex: 1;
     }
@@ -417,7 +519,8 @@ import { User } from '../../../models/user.model';
       align-items: center;
       gap: 16px;
       padding: 16px;
-      background: #f9f9f9;
+      background: #16191d;
+      border: 1px solid #2d3439;
       border-radius: 8px;
     }
 
@@ -430,44 +533,77 @@ import { User } from '../../../models/user.model';
     }
 
     .status-icon.status-pending {
-      background: #fff3e0;
-      color: #f57c00;
+      background: rgba(251, 191, 36, 0.2);
+      color: #fbbf24;
     }
 
     .status-icon.status-approved {
-      background: #e8f5e8;
-      color: #2e7d32;
+      background: rgba(0, 210, 106, 0.2);
+      color: #00d26a;
     }
 
     .status-icon.status-declined {
-      background: #ffebee;
-      color: #d32f2f;
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
     }
 
     .status-icon.status-completed {
-      background: #e3f2fd;
-      color: #1976d2;
+      background: rgba(59, 130, 246, 0.2);
+      color: #3b82f6;
     }
 
     .status-text .status-title {
       margin: 0 0 4px 0;
       font-weight: 600;
-      color: #333;
+      color: #ffffff;
     }
 
     .status-text .status-description {
       margin: 0;
-      color: #666;
+      color: #9ca3af;
       font-size: 0.875rem;
     }
 
     .actions {
-      border-top: 1px solid #e0e0e0;
+      border-top: 1px solid #2d3439;
       padding: 24px;
       display: flex;
       justify-content: space-between;
       gap: 16px;
       flex-wrap: wrap;
+      background-color: transparent;
+    }
+
+    .actions button[mat-button] {
+      color: #9ca3af !important;
+      border-radius: 6px;
+    }
+
+    .actions button[mat-button]:hover {
+      color: #ffffff !important;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .actions button[color="primary"] {
+      color: #00d26a !important;
+    }
+
+    .actions button[color="primary"]:hover {
+      background-color: rgba(0, 210, 106, 0.1);
+    }
+
+    .actions button[color="warn"] {
+      color: #ef4444 !important;
+    }
+
+    .actions button[color="warn"]:hover {
+      background-color: rgba(239, 68, 68, 0.1);
+    }
+
+    .actions button[mat-raised-button] {
+      background-color: #00d26a !important;
+      color: #000000 !important;
+      border-radius: 6px;
     }
 
     .action-buttons {
@@ -513,6 +649,11 @@ import { User } from '../../../models/user.model';
       .action-buttons button {
         width: 100%;
       }
+
+      ::ng-deep .request-tabs .mat-mdc-tab-label {
+        min-width: 120px;
+        font-size: 0.9rem;
+      }
     }
   `]
 })
@@ -520,6 +661,7 @@ export class RequestDetailsComponent implements OnInit, OnDestroy {
   request: BookRequest | null = null;
   currentUser: User | null = null;
   isLoading = false;
+  selectedTabIndex = 0;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -528,6 +670,7 @@ export class RequestDetailsComponent implements OnInit, OnDestroy {
     private requestService: RequestService,
     private counterService: CounterService,
     private authService: AuthService,
+    private messageService: MessageService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -542,6 +685,15 @@ export class RequestDetailsComponent implements OnInit, OnDestroy {
       const requestId = params['id'];
       if (requestId) {
         this.loadRequest(requestId);
+      }
+    });
+
+    // Check for tab parameter in query params
+    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      if (params['tab'] === 'messages') {
+        this.selectedTabIndex = 1;
+      } else {
+        this.selectedTabIndex = 0;
       }
     });
   }
@@ -575,6 +727,10 @@ export class RequestDetailsComponent implements OnInit, OnDestroy {
 
   get isRequester(): boolean {
     return this.currentUser?.id === this.request?.requesterId;
+  }
+
+  canAccessMessages(): boolean {
+    return this.isOwner || this.isRequester;
   }
 
   getExpectedReturnDate(): Date | null {

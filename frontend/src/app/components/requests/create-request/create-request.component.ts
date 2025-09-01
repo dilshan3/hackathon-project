@@ -11,6 +11,7 @@ import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { RequestService } from '../../../services/request.service';
+import { WebhookService } from '../../../services/webhook.service';
 import { Book } from '../../../models/book.model';
 
 @Component({
@@ -464,6 +465,7 @@ export class CreateRequestComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private requestService: RequestService,
+    private webhookService: WebhookService,
     private snackBar: MatSnackBar,
     private dialogRef: MatDialogRef<CreateRequestComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { book: Book }
@@ -499,6 +501,8 @@ export class CreateRequestComponent implements OnInit {
 
       this.requestService.createRequest(requestData).subscribe({
         next: (request) => {
+          // Send webhook notification
+          this.sendWebhookNotification(request, formValue);
           this.dialogRef.close(request);
         },
         error: (error) => {
@@ -521,6 +525,30 @@ export class CreateRequestComponent implements OnInit {
 
   onCancel(): void {
     this.dialogRef.close();
+  }
+
+  private sendWebhookNotification(request: any, formValue: any): void {
+    // Send webhook notification about the new book request
+    const webhookData = {
+      bookId: this.data.book.id,
+      bookTitle: this.data.book.title,
+      requesterId: request.requesterId || 'current-user', // You might need to get this from auth service
+      requesterName: 'Current User', // You might need to get this from auth service
+      ownerId: this.data.book.ownerId,
+      ownerName: this.data.book.owner?.displayName || 'Book Owner',
+      startDate: formValue.startDate.toISOString().split('T')[0],
+      durationDays: formValue.durationDays
+    };
+
+    this.webhookService.sendBookRequestEvent(webhookData).subscribe({
+      next: (response) => {
+        console.log('Webhook notification sent successfully:', response);
+      },
+      error: (error) => {
+        console.error('Failed to send webhook notification:', error);
+        // Don't show error to user as webhook is optional
+      }
+    });
   }
 
   private formatDate(date: Date): string {

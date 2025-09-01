@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AuthResponse } from '../models/auth-response.model';
 import { LoginRequest, RegisterRequest, UpdateProfileRequest } from '../models/auth-request.model';
 import { Me, User } from '../models/user.model';
+import { WebhookService } from './webhook.service';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -21,7 +22,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private webhookService: WebhookService
   ) {
     this.loadStoredUser();
   }
@@ -43,7 +45,11 @@ export class AuthService {
   register(request: RegisterRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.API_BASE_URL}/auth/register`, request)
       .pipe(
-        tap(response => this.handleAuthSuccess(response)),
+        tap(response => {
+          this.handleAuthSuccess(response);
+          // Send webhook notification for new user registration
+          this.sendRegistrationWebhook(response.user);
+        }),
         catchError(this.handleError)
       );
   }
@@ -132,6 +138,25 @@ export class AuthService {
     } catch (error) {
       return true;
     }
+  }
+
+  private sendRegistrationWebhook(user: User): void {
+    const webhookData = {
+      userId: user.id,
+      email: user.email,
+      displayName: user.displayName,
+      city: user.city
+    };
+
+    this.webhookService.sendUserRegistrationEvent(webhookData).subscribe({
+      next: (response) => {
+        console.log('User registration webhook sent successfully:', response);
+      },
+      error: (error) => {
+        console.error('Failed to send registration webhook:', error);
+        // Don't throw error as webhook is optional
+      }
+    });
   }
 
   private handleError = (error: any): Observable<never> => {

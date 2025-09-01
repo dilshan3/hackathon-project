@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -27,6 +27,7 @@ import { User } from '../../../models/user.model';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    RouterModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -43,8 +44,20 @@ import { User } from '../../../models/user.model';
     <div class="search-container">
       <mat-card class="search-card">
         <mat-card-header>
-          <mat-card-title>Discover Books</mat-card-title>
-          <mat-card-subtitle>Find books to borrow from the ReadLoop community</mat-card-subtitle>
+          <div class="header-content">
+            <mat-card-title>Discover Books</mat-card-title>
+            <mat-card-subtitle>Find books to borrow from the ReadLoop community</mat-card-subtitle>
+          </div>
+          <div class="header-actions" *ngIf="currentUser">
+            <button 
+              mat-raised-button 
+              color="accent"
+              routerLink="/recommendations"
+              class="recommendations-btn">
+              <mat-icon>auto_awesome</mat-icon>
+              Get AI Recommendations
+            </button>
+          </div>
         </mat-card-header>
 
         <mat-card-content>
@@ -146,25 +159,49 @@ import { User } from '../../../models/user.model';
       padding: 24px;
       max-width: 1200px;
       margin: 0 auto;
-      background-color: #0f1419;
+      background-color: var(--bg-primary);
       min-height: calc(100vh - 64px);
     }
 
     .search-card {
       margin-bottom: 32px;
-      background-color: #1e2328 !important;
-      border: 1px solid #2d3439;
-      color: #ffffff;
+      background-color: var(--bg-secondary) !important;
+      border: 1px solid var(--border-primary);
+      color: var(--text-primary);
+    }
+
+    .search-card mat-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .header-content {
+      flex: 1;
     }
 
     .search-card mat-card-header mat-card-title {
-      color: #ffffff;
+      color: var(--text-primary);
       font-size: 1.5rem;
       font-weight: 600;
     }
 
     .search-card mat-card-header mat-card-subtitle {
-      color: #9ca3af;
+      color: var(--text-secondary);
+    }
+
+    .header-actions {
+      flex-shrink: 0;
+    }
+
+    .recommendations-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--accent-primary) !important;
+      color: #000000 !important;
+      border-radius: 8px;
     }
 
     .search-form {
@@ -189,7 +226,7 @@ import { User } from '../../../models/user.model';
     .search-button {
       height: 56px;
       min-width: 120px;
-      background: #00d26a !important;
+      background: var(--accent-primary) !important;
       color: #000000 !important;
     }
 
@@ -288,6 +325,21 @@ import { User } from '../../../models/user.model';
     @media (max-width: 768px) {
       .search-container {
         padding: 16px;
+      }
+
+      .search-card mat-card-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+      }
+
+      .header-actions {
+        align-self: center;
+      }
+
+      .recommendations-btn {
+        width: 100%;
+        justify-content: center;
       }
 
       .search-row {
