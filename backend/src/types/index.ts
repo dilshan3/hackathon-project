@@ -148,6 +148,72 @@ export interface UpdateUserPreferencesRequest {
   notificationFrequency?: 'IMMEDIATE' | 'DAILY' | 'WEEKLY';
 }
 
+// AI Recommendation Types for MVP 1.2
+export interface UserReadingPreferences {
+  userId: string;
+  genres: string[];
+  authors: string[];
+  readingGoals?: string;
+  bookLength?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BookRecommendation {
+  id: string;
+  userId: string;
+  bookId: string;
+  score: number;
+  reasoning?: string;
+  createdAt: string;
+  book?: Pick<Book, "id" | "title" | "author" | "genre" | "condition" | "status">;
+}
+
+export interface RecommendationFeedback {
+  id: string;
+  userId: string;
+  bookId: string;
+  liked: boolean;
+  reason?: string;
+  createdAt: string;
+}
+
+export interface AvailableGenre {
+  id: number;
+  name: string;
+  description?: string;
+  createdAt: string;
+}
+
+export interface AvailableAuthor {
+  id: number;
+  name: string;
+  bio?: string;
+  createdAt: string;
+}
+
+export interface RecommendationRequest {
+  userId: string;
+  limit?: number;
+  excludeOwned?: boolean;
+  genres?: string[];
+  minScore?: number;
+}
+
+// AI Recommendation Request Types
+export interface UpdateReadingPreferencesRequest {
+  genres?: string[];
+  authors?: string[];
+  readingGoals?: string;
+  bookLength?: string;
+}
+
+export interface SubmitFeedbackRequest {
+  bookId: string;
+  liked: boolean;
+  reason?: string;
+}
+
 // Error Types
 export interface ApiError {
   error: {
@@ -220,6 +286,49 @@ export interface DatabaseEmailNotification {
   body: string;
   status: string;
   sent_at?: Date;
+  created_at: Date;
+}
+
+// AI Recommendation Database Types
+export interface DatabaseUserReadingPreferences {
+  user_id: string;
+  genres: string[];
+  authors: string[];
+  reading_goals?: string;
+  book_length?: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface DatabaseBookRecommendation {
+  id: string;
+  user_id: string;
+  book_id: string;
+  score: number;
+  reasoning?: string;
+  created_at: Date;
+}
+
+export interface DatabaseRecommendationFeedback {
+  id: string;
+  user_id: string;
+  book_id: string;
+  liked: boolean;
+  reason?: string;
+  created_at: Date;
+}
+
+export interface DatabaseAvailableGenre {
+  id: number;
+  name: string;
+  description?: string;
+  created_at: Date;
+}
+
+export interface DatabaseAvailableAuthor {
+  id: number;
+  name: string;
+  bio?: string;
   created_at: Date;
 }
 

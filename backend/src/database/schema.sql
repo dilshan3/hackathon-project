@@ -71,6 +71,73 @@ CREATE TABLE IF NOT EXISTS email_notifications (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- AI Recommendation tables for MVP 1.2
+CREATE TABLE IF NOT EXISTS user_reading_preferences (
+    user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    genres TEXT[] DEFAULT '{}',
+    authors TEXT[] DEFAULT '{}',
+    reading_goals VARCHAR(50),
+    book_length VARCHAR(20),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS book_recommendations (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    book_id UUID NOT NULL REFERENCES books(id) ON DELETE CASCADE,
+    score DECIMAL(3,2) NOT NULL CHECK (score >= 0 AND score <= 1),
+    reasoning TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS recommendation_feedback (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    book_id UUID NOT NULL REFERENCES books(id) ON DELETE CASCADE,
+    liked BOOLEAN NOT NULL,
+    reason TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS available_genres (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS available_authors (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    bio TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert default genres
+INSERT INTO available_genres (name, description) VALUES
+('Fiction', 'Novels, short stories, and fictional narratives'),
+('Non-Fiction', 'True stories, biographies, and factual content'),
+('Mystery', 'Suspense, detective stories, and crime fiction'),
+('Romance', 'Love stories and romantic fiction'),
+('Science Fiction', 'Futuristic and speculative fiction'),
+('Fantasy', 'Magical and fantastical stories'),
+('Biography', 'Life stories of real people'),
+('History', 'Historical events and periods'),
+('Self-Help', 'Personal development and improvement'),
+('Business', 'Business strategy, entrepreneurship, and professional development'),
+('Technology', 'Technical books and computer science'),
+('Travel', 'Travel guides and adventure stories'),
+('Cooking', 'Recipes and culinary arts'),
+('Art', 'Visual arts, design, and creativity'),
+('Sports', 'Sports stories and athletic achievements'),
+('Health', 'Wellness, fitness, and medical topics'),
+('Religion', 'Religious texts and spiritual content'),
+('Politics', 'Political theory and current affairs'),
+('Science', 'Scientific discoveries and research'),
+('Education', 'Learning materials and academic content')
+ON CONFLICT (name) DO NOTHING;
+
 -- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_books_owner_id ON books(owner_id);
@@ -84,6 +151,16 @@ CREATE INDEX IF NOT EXISTS idx_messages_created_at ON messages(created_at);
 CREATE INDEX IF NOT EXISTS idx_user_preferences_user ON user_preferences(user_id);
 CREATE INDEX IF NOT EXISTS idx_email_notifications_user ON email_notifications(user_id);
 CREATE INDEX IF NOT EXISTS idx_email_notifications_status ON email_notifications(status, created_at);
+
+-- AI Recommendation indexes
+CREATE INDEX IF NOT EXISTS idx_user_reading_preferences_user ON user_reading_preferences(user_id);
+CREATE INDEX IF NOT EXISTS idx_book_recommendations_user ON book_recommendations(user_id);
+CREATE INDEX IF NOT EXISTS idx_book_recommendations_book ON book_recommendations(book_id);
+CREATE INDEX IF NOT EXISTS idx_book_recommendations_score ON book_recommendations(score DESC);
+CREATE INDEX IF NOT EXISTS idx_recommendation_feedback_user ON recommendation_feedback(user_id);
+CREATE INDEX IF NOT EXISTS idx_recommendation_feedback_book ON recommendation_feedback(book_id);
+CREATE INDEX IF NOT EXISTS idx_available_genres_name ON available_genres(name);
+CREATE INDEX IF NOT EXISTS idx_available_authors_name ON available_authors(name);
 
 -- Full-text search index for books
 CREATE INDEX IF NOT EXISTS idx_books_search ON books USING gin(to_tsvector('english', title || ' ' || COALESCE(author, '') || ' ' || COALESCE(genre, '')));
@@ -107,4 +184,7 @@ CREATE TRIGGER update_book_requests_updated_at BEFORE UPDATE ON book_requests
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_user_preferences_updated_at BEFORE UPDATE ON user_preferences
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_user_reading_preferences_updated_at BEFORE UPDATE ON user_reading_preferences
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

@@ -61,6 +61,27 @@ export const updateUserPreferencesSchema = Joi.object({
   notificationFrequency: Joi.string().valid('IMMEDIATE', 'DAILY', 'WEEKLY').optional()
 }).min(1);
 
+// AI Recommendation Validation Schemas
+export const updateReadingPreferencesSchema = Joi.object({
+  genres: Joi.array().items(Joi.string()).optional(),
+  authors: Joi.array().items(Joi.string()).optional(),
+  readingGoals: Joi.string().optional(),
+  bookLength: Joi.string().optional()
+}).min(1);
+
+export const submitFeedbackSchema = Joi.object({
+  bookId: Joi.string().uuid().required(),
+  liked: Joi.boolean().required(),
+  reason: Joi.string().optional()
+});
+
+export const getRecommendationsSchema = Joi.object({
+  limit: Joi.number().integer().min(1).max(50).default(10),
+  excludeOwned: Joi.boolean().default(true),
+  genres: Joi.array().items(Joi.string()).optional(),
+  minScore: Joi.number().min(0).max(1).default(0)
+});
+
 export const paginationSchema = Joi.object({
   page: Joi.number().integer().min(1).default(1),
   pageSize: Joi.number().integer().min(1).max(100).default(20)

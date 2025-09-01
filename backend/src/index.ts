@@ -18,6 +18,7 @@ import requestRoutes from '@/routes/requests';
 import counterRoutes from '@/routes/counters';
 import messageRoutes from '@/routes/messages';
 import preferencesRoutes from '@/routes/preferences';
+import recommendationsRoutes from '@/routes/recommendations';
 
 // Load environment variables
 dotenv.config();
@@ -71,6 +72,7 @@ app.use('/api/requests', requestRoutes);
 app.use('/api/counters', counterRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/preferences', preferencesRoutes);
+app.use('/api/recommendations', recommendationsRoutes);
 
 // 404 handler
 app.use('*', notFoundHandler);
