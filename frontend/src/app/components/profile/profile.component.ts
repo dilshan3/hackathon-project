@@ -103,7 +103,7 @@ import { Me } from '../../models/user.model';
   styles: [`
     .profile-container {
       min-height: calc(100vh - 64px);
-      background: #f5f5f5;
+      background: #0f1419;
       padding: 24px;
     }
     
@@ -114,6 +114,19 @@ import { Me } from '../../models/user.model';
     
     .profile-card {
       padding: 24px;
+      background-color: #1e2328 !important;
+      border: 1px solid #2d3439;
+      color: #ffffff;
+    }
+
+    .profile-card mat-card-header mat-card-title {
+      color: #ffffff;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .profile-card mat-card-header mat-card-subtitle {
+      color: #9ca3af;
     }
     
     .profile-header {
@@ -127,14 +140,14 @@ import { Me } from '../../models/user.model';
       width: 80px;
       height: 80px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #4CAF50, #45a049);
+      background: linear-gradient(135deg, #00d26a, #00a855);
       display: flex;
       align-items: center;
       justify-content: center;
     }
     
     .avatar-icon {
-      color: white;
+      color: #000000;
       font-size: 3rem;
       width: 3rem;
       height: 3rem;
@@ -155,11 +168,12 @@ import { Me } from '../../models/user.model';
       margin-bottom: 24px;
       padding: 16px;
       border-radius: 8px;
-      background: #fafafa;
+      background: #2d3439;
+      border: 1px solid #3d4349;
     }
     
     .detail-icon {
-      color: #4CAF50;
+      color: #00d26a;
       margin-top: 4px;
     }
     
@@ -172,24 +186,32 @@ import { Me } from '../../models/user.model';
     
     .detail-label {
       font-size: 0.875rem;
-      color: #666;
+      color: #9ca3af;
       font-weight: 500;
     }
     
     .detail-value {
       font-size: 1rem;
-      color: #333;
+      color: #ffffff;
       font-weight: 400;
     }
     
     .verified-chip {
-      background: #e8f5e8;
-      color: #2e7d32;
+      background: rgba(0, 210, 106, 0.2) !important;
+      color: #00d26a !important;
+    }
+
+    .verified-chip mat-icon {
+      color: #00d26a !important;
     }
     
     .unverified-chip {
-      background: #fff3e0;
-      color: #f57c00;
+      background: rgba(245, 158, 11, 0.2) !important;
+      color: #f59e0b !important;
+    }
+
+    .unverified-chip mat-icon {
+      color: #f59e0b !important;
     }
     
     .profile-actions {
@@ -200,12 +222,16 @@ import { Me } from '../../models/user.model';
     }
     
     .edit-btn {
-      background: #4CAF50;
-      color: white;
+      background: #00d26a !important;
+      color: #000000 !important;
     }
     
     .refresh-btn {
-      color: #4CAF50;
+      color: #00d26a !important;
+    }
+
+    .refresh-btn:hover {
+      color: #ffffff !important;
     }
     
     .loading-container {
@@ -215,7 +241,11 @@ import { Me } from '../../models/user.model';
       justify-content: center;
       min-height: 400px;
       gap: 16px;
-      color: #666;
+      color: #9ca3af;
+    }
+
+    .loading-container mat-spinner {
+      --mdc-circular-progress-active-indicator-color: #00d26a;
     }
     
     @media (max-width: 768px) {

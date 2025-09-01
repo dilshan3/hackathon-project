@@ -6,12 +6,14 @@ import { Router } from '@angular/router';
 import { AuthResponse } from '../models/auth-response.model';
 import { LoginRequest, RegisterRequest, UpdateProfileRequest } from '../models/auth-request.model';
 import { Me, User } from '../models/user.model';
+import { WebhookService } from './webhook.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_BASE_URL = 'http://localhost:3000/api';
+  private readonly API_BASE_URL = `${environment.apiUrl}/api`;
   private readonly TOKEN_KEY = 'readloop_token';
   private readonly USER_KEY = 'readloop_user';
   
@@ -20,7 +22,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private webhookService: WebhookService
   ) {
     this.loadStoredUser();
   }
@@ -42,7 +45,11 @@ export class AuthService {
   register(request: RegisterRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.API_BASE_URL}/auth/register`, request)
       .pipe(
-        tap(response => this.handleAuthSuccess(response)),
+        tap(response => {
+          this.handleAuthSuccess(response);
+          // Send webhook notification for new user registration
+          this.sendRegistrationWebhook(response.user);
+        }),
         catchError(this.handleError)
       );
   }
@@ -51,6 +58,30 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.API_BASE_URL}/auth/login`, request)
       .pipe(
         tap(response => this.handleAuthSuccess(response)),
+        catchError(this.handleError)
+      );
+  }
+
+  forgotPassword(email: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.API_BASE_URL}/auth/forgot-password`, { email })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  resetPassword(token: string, password: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.API_BASE_URL}/auth/reset-password`, { 
+      token, 
+      password 
+    })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  validateResetToken(token: string): Observable<{ valid: boolean }> {
+    return this.http.post<{ valid: boolean }>(`${this.API_BASE_URL}/auth/validate-reset-token`, { token })
+      .pipe(
         catchError(this.handleError)
       );
   }
@@ -107,6 +138,25 @@ export class AuthService {
     } catch (error) {
       return true;
     }
+  }
+
+  private sendRegistrationWebhook(user: User): void {
+    const webhookData = {
+      userId: user.id,
+      email: user.email,
+      displayName: user.displayName,
+      city: user.city
+    };
+
+    this.webhookService.sendUserRegistrationEvent(webhookData).subscribe({
+      next: (response) => {
+        console.log('User registration webhook sent successfully:', response);
+      },
+      error: (error) => {
+        console.error('Failed to send registration webhook:', error);
+        // Don't throw error as webhook is optional
+      }
+    });
   }
 
   private handleError = (error: any): Observable<never> => {

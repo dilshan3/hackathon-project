@@ -25,12 +25,12 @@ export interface Book {
   id: string;
   ownerId: string;
   title: string;
-  author?: string;
-  genre?: string;
+  author?: string | undefined;
+  genre?: string | undefined;
   condition: BookCondition;
   status: BookStatus;
   createdAt: string;
-  owner?: Pick<User, "id" | "displayName" | "city">;
+  owner?: Pick<User, "id" | "displayName" | "city"> | undefined;
 }
 
 // Request Types
@@ -42,14 +42,14 @@ export interface BookRequest {
   requesterId: string;
   ownerId: string;
   status: RequestStatus;
-  note?: string;
-  startDate?: string;
-  durationDays?: number;
+  note?: string | undefined;
+  startDate?: string | undefined;
+  durationDays?: number | undefined;
   createdAt: string;
   updatedAt: string;
-  book?: Pick<Book, "id" | "title" | "author" | "condition">;
-  requester?: Pick<User, "id" | "displayName" | "city">;
-  owner?: Pick<User, "id" | "displayName" | "city">;
+  book?: Pick<Book, "id" | "title" | "author" | "condition"> | undefined;
+  requester?: Pick<User, "id" | "displayName" | "city"> | undefined;
+  owner?: Pick<User, "id" | "displayName" | "city"> | undefined;
 }
 
 // Pagination Types
@@ -72,6 +72,27 @@ export interface Message {
   requestId: string;
   senderId: string;
   body: string;
+  createdAt: string;
+}
+
+// MVP 1.1 Types
+export interface UserPreferences {
+  userId: string;
+  emailNotifications: boolean;
+  pushNotifications: boolean;
+  notificationFrequency: 'IMMEDIATE' | 'DAILY' | 'WEEKLY';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EmailNotification {
+  id: string;
+  userId: string;
+  type: string;
+  subject: string;
+  body: string;
+  status: 'PENDING' | 'SENT' | 'FAILED';
+  sentAt?: string | undefined;
   createdAt: string;
 }
 
@@ -118,6 +139,13 @@ export interface CreateBookRequestRequest {
 
 export interface CreateMessageRequest {
   body: string;
+}
+
+// MVP 1.1 Request Types
+export interface UpdateUserPreferencesRequest {
+  emailNotifications?: boolean;
+  pushNotifications?: boolean;
+  notificationFrequency?: 'IMMEDIATE' | 'DAILY' | 'WEEKLY';
 }
 
 // Error Types
@@ -171,6 +199,27 @@ export interface DatabaseMessage {
   request_id: string;
   sender_id: string;
   body: string;
+  created_at: Date;
+}
+
+// MVP 1.1 Database Types
+export interface DatabaseUserPreferences {
+  user_id: string;
+  email_notifications: boolean;
+  push_notifications: boolean;
+  notification_frequency: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface DatabaseEmailNotification {
+  id: string;
+  user_id: string;
+  type: string;
+  subject: string;
+  body: string;
+  status: string;
+  sent_at?: Date;
   created_at: Date;
 }
 

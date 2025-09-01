@@ -24,11 +24,12 @@ export const updateProfileSchema = Joi.object({
   city: Joi.string().max(255).optional()
 }).min(1);
 
+// Book validation schemas
 export const createBookSchema = Joi.object({
   title: Joi.string().min(1).max(500).required(),
   author: Joi.string().max(255).optional(),
   genre: Joi.string().max(100).optional(),
-  condition: Joi.string().valid('NEW', 'GOOD', 'FAIR', 'POOR').required(),
+  condition: Joi.string().valid('NEW', 'GOOD', 'FAIR', 'POOR').default('GOOD'),
   status: Joi.string().valid('AVAILABLE', 'LENT', 'NOT_AVAILABLE').default('AVAILABLE')
 });
 
@@ -38,8 +39,9 @@ export const updateBookSchema = Joi.object({
   genre: Joi.string().max(100).optional(),
   condition: Joi.string().valid('NEW', 'GOOD', 'FAIR', 'POOR').optional(),
   status: Joi.string().valid('AVAILABLE', 'LENT', 'NOT_AVAILABLE').optional()
-});
+}).min(1);
 
+// Book request validation schemas
 export const createBookRequestSchema = Joi.object({
   bookId: Joi.string().uuid().required(),
   startDate: Joi.date().iso().optional(),
@@ -47,9 +49,17 @@ export const createBookRequestSchema = Joi.object({
   note: Joi.string().max(1000).optional()
 });
 
+// Message validation schema
 export const createMessageSchema = Joi.object({
   body: Joi.string().min(1).max(1000).required()
 });
+
+// MVP 1.1 Validation Schemas
+export const updateUserPreferencesSchema = Joi.object({
+  emailNotifications: Joi.boolean().optional(),
+  pushNotifications: Joi.boolean().optional(),
+  notificationFrequency: Joi.string().valid('IMMEDIATE', 'DAILY', 'WEEKLY').optional()
+}).min(1);
 
 export const paginationSchema = Joi.object({
   page: Joi.number().integer().min(1).default(1),

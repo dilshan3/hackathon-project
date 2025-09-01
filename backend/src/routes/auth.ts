@@ -9,10 +9,14 @@ const router = Router();
 // POST /api/auth/register
 router.post('/register', async (req: Request, res: Response) => {
   try {
+    console.log('Register endpoint hit:', { email: req.body?.email });
     const userData = validateRequest<RegisterRequest>(registerSchema, req.body);
+    console.log('Validation passed, creating user...');
     const result = await UserService.createUser(userData);
+    console.log('User created successfully');
     sendCreated(res, result);
   } catch (error) {
+    console.error('Register endpoint error:', error);
     // Error handling is done by the error handler middleware
     throw error;
   }
