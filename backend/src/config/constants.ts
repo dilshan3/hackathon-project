@@ -3,7 +3,7 @@ export const APP_CONFIG = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   JWT_SECRET: process.env.JWT_SECRET || 'fallback-secret-key',
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '7d',
-  BCRYPT_ROUNDS: parseInt(process.env.BCRYPT_ROUNDS || '12'),
+  BCRYPT_ROUNDS: parseInt(process.env.BCRYPT_ROUNDS || '4'),
   CORS_ORIGIN: process.env.CORS_ORIGIN || 'http://localhost:4200',
   RATE_LIMIT_WINDOW_MS: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000'),
   RATE_LIMIT_MAX_REQUESTS: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100'),

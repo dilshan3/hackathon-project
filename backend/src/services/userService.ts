@@ -3,6 +3,16 @@ import { hashPassword, comparePassword, generateToken } from '@/utils/auth';
 import { DatabaseUser, User, Me, RegisterRequest, LoginRequest, UpdateProfileRequest } from '@/types';
 import { ERROR_CODES } from '@/config/constants';
 
+// Helper function to execute queries with timeout
+const queryWithTimeout = async (query: string, params: any[], timeoutMs: number = 10000) => {
+  return Promise.race([
+    pool.query(query, params),
+    new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Database query timeout')), timeoutMs)
+    )
+  ]);
+};
+
 export class UserService {
   // Create a new user
   static async createUser(userData: RegisterRequest): Promise<{ token: string; user: User }> {
@@ -24,7 +34,7 @@ export class UserService {
       RETURNING id, email, display_name, city, email_verified, created_at
     `;
     
-    const result = await pool.query(query, [email, passwordHash, displayName, city]);
+    const result = await queryWithTimeout(query, [email, passwordHash, displayName, city]) as any;
     const dbUser = result.rows[0];
     
     // Generate token
@@ -87,7 +97,7 @@ export class UserService {
       WHERE id = $1
     `;
     
-    const result = await pool.query(query, [id]);
+    const result = await queryWithTimeout(query, [id]) as any;
     if (result.rows.length === 0) {
       return null;
     }
@@ -134,7 +144,7 @@ export class UserService {
       RETURNING id, email, display_name, city, email_verified, created_at
     `;
     
-    const result = await pool.query(query, values);
+    const result = await queryWithTimeout(query, values) as any;
     if (result.rows.length === 0) {
       throw { error: { code: ERROR_CODES.NOT_FOUND, message: 'User not found' } };
     }
@@ -158,7 +168,7 @@ export class UserService {
       WHERE email = $1
     `;
     
-    const result = await pool.query(query, [email]);
+    const result = await queryWithTimeout(query, [email]) as any;
     if (result.rows.length === 0) {
       return null;
     }
