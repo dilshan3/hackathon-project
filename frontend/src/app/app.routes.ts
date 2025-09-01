@@ -75,6 +75,16 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'recommendations',
+    loadComponent: () => import('./components/recommendations/recommendations/recommendations.component').then(m => m.RecommendationComponent),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'preferences',
+    loadComponent: () => import('./components/recommendations/preferences/preferences.component').then(m => m.PreferencesComponent),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'health',
     loadComponent: () => import('./components/health/health.component').then(m => m.HealthComponent),
     canActivate: [AuthGuard]

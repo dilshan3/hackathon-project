@@ -10,6 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BookService } from '../../../services/book.service';
+import { WebhookService } from '../../../services/webhook.service';
+import { AuthService } from '../../../services/auth.service';
 import { BookCondition, BookStatus } from '../../../models/book.model';
 
 @Component({
@@ -258,6 +260,8 @@ export class AddBookComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private bookService: BookService,
+    private webhookService: WebhookService,
+    private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar
   ) {}
@@ -284,6 +288,9 @@ export class AddBookComponent implements OnInit {
       
       this.bookService.addBook(bookData).subscribe({
         next: (book) => {
+          // Send webhook notification for new book
+          this.sendBookAddedWebhook(book, bookData);
+          
           this.snackBar.open('Book added successfully!', 'Close', {
             duration: 3000,
             panelClass: ['success-snackbar']
@@ -308,5 +315,31 @@ export class AddBookComponent implements OnInit {
 
   onCancel(): void {
     this.router.navigate(['/books/mine']);
+  }
+
+  private sendBookAddedWebhook(book: any, bookData: any): void {
+    this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        const webhookData = {
+          bookId: book.id,
+          title: bookData.title,
+          author: bookData.author,
+          genre: bookData.genre,
+          ownerId: user.id,
+          ownerName: user.displayName,
+          city: user.city
+        };
+
+        this.webhookService.sendBookAddedEvent(webhookData).subscribe({
+          next: (response) => {
+            console.log('Book added webhook sent successfully:', response);
+          },
+          error: (error) => {
+            console.error('Failed to send book added webhook:', error);
+            // Don't throw error as webhook is optional
+          }
+        });
+      }
+    }).unsubscribe(); // Unsubscribe immediately after getting current user
   }
 }

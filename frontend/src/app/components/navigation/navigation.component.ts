@@ -36,6 +36,10 @@ import { Counters } from '../../models/common.model';
         
         <nav class="nav-links" *ngIf="currentUser">
           <a mat-button routerLink="/books" routerLinkActive="active" class="nav-link">Discover</a>
+          <a mat-button routerLink="/recommendations" routerLinkActive="active" class="nav-link">
+            <mat-icon>auto_awesome</mat-icon>
+            AI Recommendations
+          </a>
           <a mat-button routerLink="/books/mine" routerLinkActive="active" class="nav-link">My Books</a>
           <a mat-button routerLink="/dashboard" routerLinkActive="active" class="nav-link">Dashboard</a>
           <a mat-button routerLink="/requests" 
@@ -68,6 +72,10 @@ import { Counters } from '../../models/common.model';
               <button mat-menu-item routerLink="/profile">
                 <mat-icon>person</mat-icon>
                 <span>Profile</span>
+              </button>
+              <button mat-menu-item routerLink="/preferences">
+                <mat-icon>tune</mat-icon>
+                <span>Reading Preferences</span>
               </button>
               <button mat-menu-item (click)="logout()">
                 <mat-icon>logout</mat-icon>
