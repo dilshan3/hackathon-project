@@ -174,6 +174,8 @@ import { Book, BookCondition, BookStatus } from '../../../models/book.model';
       padding: 24px;
       max-width: 800px;
       margin: 0 auto;
+      background-color: #0f1419;
+      min-height: 100vh;
     }
 
     .header {
@@ -185,11 +187,16 @@ import { Book, BookCondition, BookStatus } from '../../../models/book.model';
 
     .header h1 {
       margin: 0;
-      color: #333;
+      color: #ffffff;
     }
 
     .back-button {
-      color: #666;
+      color: #9ca3af;
+    }
+
+    .back-button:hover {
+      color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.1);
     }
 
     .loading-container,
@@ -200,7 +207,7 @@ import { Book, BookCondition, BookStatus } from '../../../models/book.model';
       gap: 16px;
       padding: 64px;
       text-align: center;
-      color: #666;
+      color: #9ca3af;
     }
 
     .error-icon {
@@ -211,7 +218,27 @@ import { Book, BookCondition, BookStatus } from '../../../models/book.model';
     }
 
     .edit-book-card {
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background-color: #1e2328;
+      color: #ffffff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      border: 1px solid #2d3439;
+    }
+
+    .edit-book-card mat-card-header {
+      background-color: #1e2328;
+    }
+
+    .edit-book-card mat-card-title {
+      color: #ffffff !important;
+    }
+
+    .edit-book-card mat-card-subtitle {
+      color: #9ca3af !important;
+    }
+
+    .edit-book-card mat-card-content {
+      background-color: #1e2328;
+      color: #ffffff;
     }
 
     .form-row {
@@ -232,15 +259,16 @@ import { Book, BookCondition, BookStatus } from '../../../models/book.model';
     .status-descriptions {
       margin-top: 24px;
       padding: 16px;
-      background-color: #f9f9f9;
+      background-color: #16191d;
       border-radius: 8px;
-      border-left: 4px solid #4CAF50;
+      border-left: 4px solid #00d26a;
+      border: 1px solid #2d3439;
     }
 
     .condition-descriptions h4,
     .status-descriptions h4 {
       margin: 0 0 12px 0;
-      color: #333;
+      color: #ffffff;
       font-size: 1rem;
     }
 
@@ -253,7 +281,7 @@ import { Book, BookCondition, BookStatus } from '../../../models/book.model';
     .condition-descriptions li,
     .status-descriptions li {
       margin-bottom: 4px;
-      color: #666;
+      color: #9ca3af;
       font-size: 0.875rem;
     }
 
@@ -262,10 +290,39 @@ import { Book, BookCondition, BookStatus } from '../../../models/book.model';
       justify-content: flex-end;
       gap: 12px;
       padding: 16px 24px;
+      background-color: #1e2328;
+      border-top: 1px solid #2d3439;
+    }
+
+    mat-card-actions button {
+      border-radius: 6px;
+    }
+
+    mat-card-actions button[mat-button] {
+      color: #9ca3af;
+    }
+
+    mat-card-actions button[mat-button]:hover {
+      color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    mat-card-actions button[mat-raised-button] {
+      background-color: #00d26a !important;
+      color: #000000 !important;
+    }
+
+    mat-card-actions button[mat-raised-button]:disabled {
+      background-color: #2d3439 !important;
+      color: #6b7280 !important;
     }
 
     mat-spinner {
       margin-right: 8px;
+    }
+
+    mat-spinner circle {
+      stroke: #000000;
     }
 
     @media (max-width: 768px) {

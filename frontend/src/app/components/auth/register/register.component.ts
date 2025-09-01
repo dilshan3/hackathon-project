@@ -306,7 +306,7 @@ export class RegisterComponent {
       this.authService.register(registerRequest).subscribe({
         next: () => {
           this.snackBar.open('Account created successfully!', 'Close', { duration: 3000 });
-          this.router.navigate(['/profile']);
+          this.router.navigate(['/books']);
         },
         error: (error) => {
           this.snackBar.open(error.message, 'Close', { duration: 5000 });

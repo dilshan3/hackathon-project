@@ -109,10 +109,22 @@ import { Book } from '../../../models/book.model';
     </form>
   `,
   styles: [`
+    :host {
+      background-color: #1e2328;
+      color: #ffffff;
+    }
+
+    h2[mat-dialog-title] {
+      color: #ffffff !important;
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+
     .book-info {
       padding: 16px 0;
       border-bottom: 1px solid #2d3439;
       margin-bottom: 20px;
+      background-color: transparent;
     }
 
     .book-info h3 {
@@ -143,6 +155,7 @@ import { Book } from '../../../models/book.model';
       max-height: 400px;
       overflow-y: auto;
       color: #ffffff;
+      background-color: transparent;
     }
 
     mat-dialog-actions {
@@ -150,19 +163,29 @@ import { Book } from '../../../models/book.model';
       justify-content: flex-end;
       gap: 12px;
       padding: 16px 0;
+      background-color: transparent;
+      border-top: 1px solid #2d3439;
     }
 
     mat-dialog-actions button[mat-button] {
       color: #9ca3af !important;
+      border-radius: 6px;
     }
 
     mat-dialog-actions button[mat-button]:hover {
       color: #ffffff !important;
+      background-color: rgba(255, 255, 255, 0.1);
     }
 
     mat-dialog-actions button[mat-raised-button] {
       background: #00d26a !important;
       color: #000000 !important;
+      border-radius: 6px;
+    }
+
+    mat-dialog-actions button[mat-raised-button]:disabled {
+      background: #2d3439 !important;
+      color: #6b7280 !important;
     }
 
     mat-spinner {
@@ -181,6 +204,33 @@ import { Book } from '../../../models/book.model';
 
     ::ng-deep .mat-mdc-form-field.mat-focused .mat-datepicker-toggle {
       color: #00d26a;
+    }
+
+    /* Ensure form field labels and hints are visible */
+    ::ng-deep .mat-mdc-form-field .mat-mdc-form-field-label {
+      color: #9ca3af;
+    }
+
+    ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-form-field-label {
+      color: #00d26a !important;
+    }
+
+    ::ng-deep .mat-mdc-form-field .mat-mdc-form-field-hint {
+      color: #9ca3af;
+    }
+
+    /* Input field text */
+    ::ng-deep .mat-mdc-input-element {
+      color: #ffffff !important;
+    }
+
+    ::ng-deep .mat-mdc-input-element::placeholder {
+      color: #6b7280 !important;
+    }
+
+    /* Textarea */
+    ::ng-deep textarea.mat-mdc-input-element {
+      color: #ffffff !important;
     }
   `]
 })
