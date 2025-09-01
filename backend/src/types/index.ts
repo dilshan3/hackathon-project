@@ -75,6 +75,27 @@ export interface Message {
   createdAt: string;
 }
 
+// MVP 1.1 Types
+export interface UserPreferences {
+  userId: string;
+  emailNotifications: boolean;
+  pushNotifications: boolean;
+  notificationFrequency: 'IMMEDIATE' | 'DAILY' | 'WEEKLY';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EmailNotification {
+  id: string;
+  userId: string;
+  type: string;
+  subject: string;
+  body: string;
+  status: 'PENDING' | 'SENT' | 'FAILED';
+  sentAt?: string | undefined;
+  createdAt: string;
+}
+
 // Request/Response Types
 export interface RegisterRequest {
   email: string;
@@ -118,6 +139,13 @@ export interface CreateBookRequestRequest {
 
 export interface CreateMessageRequest {
   body: string;
+}
+
+// MVP 1.1 Request Types
+export interface UpdateUserPreferencesRequest {
+  emailNotifications?: boolean;
+  pushNotifications?: boolean;
+  notificationFrequency?: 'IMMEDIATE' | 'DAILY' | 'WEEKLY';
 }
 
 // Error Types
@@ -171,6 +199,27 @@ export interface DatabaseMessage {
   request_id: string;
   sender_id: string;
   body: string;
+  created_at: Date;
+}
+
+// MVP 1.1 Database Types
+export interface DatabaseUserPreferences {
+  user_id: string;
+  email_notifications: boolean;
+  push_notifications: boolean;
+  notification_frequency: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface DatabaseEmailNotification {
+  id: string;
+  user_id: string;
+  type: string;
+  subject: string;
+  body: string;
+  status: string;
+  sent_at?: Date;
   created_at: Date;
 }
 

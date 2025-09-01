@@ -49,6 +49,28 @@ CREATE TABLE IF NOT EXISTS messages (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- User preferences table for MVP 1.1
+CREATE TABLE IF NOT EXISTS user_preferences (
+    user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    email_notifications BOOLEAN DEFAULT TRUE,
+    push_notifications BOOLEAN DEFAULT TRUE,
+    notification_frequency VARCHAR(20) DEFAULT 'IMMEDIATE' CHECK (notification_frequency IN ('IMMEDIATE', 'DAILY', 'WEEKLY')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Email notification log table for MVP 1.1
+CREATE TABLE IF NOT EXISTS email_notifications (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    type VARCHAR(50) NOT NULL,
+    subject VARCHAR(255) NOT NULL,
+    body TEXT NOT NULL,
+    status VARCHAR(20) DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'SENT', 'FAILED')),
+    sent_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_books_owner_id ON books(owner_id);
@@ -59,6 +81,9 @@ CREATE INDEX IF NOT EXISTS idx_book_requests_owner_id ON book_requests(owner_id)
 CREATE INDEX IF NOT EXISTS idx_book_requests_status ON book_requests(status);
 CREATE INDEX IF NOT EXISTS idx_messages_request_id ON messages(request_id);
 CREATE INDEX IF NOT EXISTS idx_messages_created_at ON messages(created_at);
+CREATE INDEX IF NOT EXISTS idx_user_preferences_user ON user_preferences(user_id);
+CREATE INDEX IF NOT EXISTS idx_email_notifications_user ON email_notifications(user_id);
+CREATE INDEX IF NOT EXISTS idx_email_notifications_status ON email_notifications(status, created_at);
 
 -- Full-text search index for books
 CREATE INDEX IF NOT EXISTS idx_books_search ON books USING gin(to_tsvector('english', title || ' ' || COALESCE(author, '') || ' ' || COALESCE(genre, '')));
@@ -79,4 +104,7 @@ CREATE TRIGGER update_books_updated_at BEFORE UPDATE ON books
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_book_requests_updated_at BEFORE UPDATE ON book_requests
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_user_preferences_updated_at BEFORE UPDATE ON user_preferences
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
