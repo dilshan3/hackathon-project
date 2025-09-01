@@ -111,23 +111,24 @@ import { Book } from '../../../models/book.model';
   styles: [`
     .book-info {
       padding: 16px 0;
-      border-bottom: 1px solid #e0e0e0;
+      border-bottom: 1px solid #2d3439;
       margin-bottom: 20px;
     }
 
     .book-info h3 {
       margin: 0 0 8px 0;
-      color: #333;
+      color: #ffffff;
+      font-weight: 600;
     }
 
     .book-info p {
       margin: 0 0 4px 0;
-      color: #666;
+      color: #9ca3af;
     }
 
     .owner-info {
       font-weight: 500;
-      color: #4CAF50;
+      color: #00d26a;
     }
 
     .form-field {
@@ -141,6 +142,7 @@ import { Book } from '../../../models/book.model';
     mat-dialog-content {
       max-height: 400px;
       overflow-y: auto;
+      color: #ffffff;
     }
 
     mat-dialog-actions {
@@ -150,8 +152,35 @@ import { Book } from '../../../models/book.model';
       padding: 16px 0;
     }
 
+    mat-dialog-actions button[mat-button] {
+      color: #9ca3af !important;
+    }
+
+    mat-dialog-actions button[mat-button]:hover {
+      color: #ffffff !important;
+    }
+
+    mat-dialog-actions button[mat-raised-button] {
+      background: #00d26a !important;
+      color: #000000 !important;
+    }
+
     mat-spinner {
       margin-right: 8px;
+      --mdc-circular-progress-active-indicator-color: #000000;
+    }
+
+    /* Datepicker styling for dark theme */
+    ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-form-field-focus-overlay {
+      background-color: rgba(0, 210, 106, 0.12);
+    }
+
+    ::ng-deep .mat-datepicker-toggle {
+      color: #9ca3af;
+    }
+
+    ::ng-deep .mat-mdc-form-field.mat-focused .mat-datepicker-toggle {
+      color: #00d26a;
     }
   `]
 })

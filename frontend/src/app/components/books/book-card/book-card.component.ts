@@ -87,11 +87,15 @@ import { Book } from '../../../models/book.model';
       display: flex;
       flex-direction: column;
       transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      background-color: #1e2328 !important;
+      border: 1px solid #2d3439;
+      color: #ffffff;
     }
 
     .book-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+      box-shadow: 0 8px 24px rgba(0, 210, 106, 0.15);
+      border-color: #00d26a;
     }
 
     .book-card mat-card-content {
@@ -107,7 +111,7 @@ import { Book } from '../../../models/book.model';
       margin: 0 0 12px 0;
       font-size: 1.25rem;
       font-weight: 600;
-      color: #333;
+      color: #ffffff;
       line-height: 1.3;
       min-height: 2.6rem;
       display: -webkit-box;
@@ -130,33 +134,40 @@ import { Book } from '../../../models/book.model';
     }
 
     .condition-new { 
-      background-color: #e8f5e8 !important; 
-      color: #2e7d32 !important; 
+      background-color: rgba(0, 210, 106, 0.2) !important; 
+      color: #00d26a !important; 
+      border: 1px solid #00d26a;
     }
     .condition-good { 
-      background-color: #e3f2fd !important; 
-      color: #1976d2 !important; 
+      background-color: rgba(59, 130, 246, 0.2) !important; 
+      color: #3b82f6 !important; 
+      border: 1px solid #3b82f6;
     }
     .condition-fair { 
-      background-color: #fff3e0 !important; 
-      color: #f57c00 !important; 
+      background-color: rgba(245, 158, 11, 0.2) !important; 
+      color: #f59e0b !important; 
+      border: 1px solid #f59e0b;
     }
     .condition-poor { 
-      background-color: #ffebee !important; 
-      color: #d32f2f !important; 
+      background-color: rgba(239, 68, 68, 0.2) !important; 
+      color: #ef4444 !important; 
+      border: 1px solid #ef4444;
     }
 
     .status-available { 
-      background-color: #e8f5e8 !important; 
-      color: #2e7d32 !important; 
+      background-color: rgba(0, 210, 106, 0.2) !important; 
+      color: #00d26a !important; 
+      border: 1px solid #00d26a;
     }
     .status-lent { 
-      background-color: #fff3e0 !important; 
-      color: #f57c00 !important; 
+      background-color: rgba(245, 158, 11, 0.2) !important; 
+      color: #f59e0b !important; 
+      border: 1px solid #f59e0b;
     }
     .status-not_available { 
-      background-color: #ffebee !important; 
-      color: #d32f2f !important; 
+      background-color: rgba(239, 68, 68, 0.2) !important; 
+      color: #ef4444 !important; 
+      border: 1px solid #ef4444;
     }
 
     .book-author,
@@ -167,7 +178,7 @@ import { Book } from '../../../models/book.model';
       align-items: center;
       gap: 8px;
       margin: 8px 0;
-      color: #666;
+      color: #9ca3af;
       font-size: 0.875rem;
     }
 
@@ -178,20 +189,21 @@ import { Book } from '../../../models/book.model';
       font-size: 1rem;
       width: 1rem;
       height: 1rem;
-      color: #999;
+      color: #00d26a;
     }
 
     .owner-city {
-      color: #999;
+      color: #6b7280;
       font-size: 0.8rem;
     }
 
     .book-actions {
       padding: 16px 20px;
-      border-top: 1px solid #e0e0e0;
+      border-top: 1px solid #2d3439;
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+      background-color: #1e2328;
     }
 
     .book-actions button {
@@ -203,6 +215,32 @@ import { Book } from '../../../models/book.model';
       width: 1rem;
       height: 1rem;
       margin-right: 4px;
+    }
+
+    .book-actions button[mat-button] {
+      color: #9ca3af !important;
+    }
+
+    .book-actions button[mat-button]:hover {
+      color: #ffffff !important;
+    }
+
+    .book-actions button[mat-raised-button] {
+      background: #00d26a !important;
+      color: #000000 !important;
+    }
+
+    /* Specific button colors */
+    .book-actions button[color="primary"] {
+      color: #3b82f6 !important;
+    }
+
+    .book-actions button[color="accent"] {
+      color: #00d26a !important;
+    }
+
+    .book-actions button[color="warn"] {
+      color: #ef4444 !important;
     }
 
     @media (max-width: 768px) {

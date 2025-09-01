@@ -302,18 +302,91 @@ body {
   color: #00d26a !important;
 }
 
+/* Datepicker styling for dark theme */
+.mat-datepicker-popup {
+  background-color: #1e2328 !important;
+  border: 1px solid #2d3439 !important;
+}
+
+.mat-calendar {
+  background-color: #1e2328 !important;
+  color: #ffffff !important;
+}
+
+.mat-calendar-header {
+  background-color: #1e2328 !important;
+  color: #ffffff !important;
+}
+
+.mat-calendar-table-header {
+  color: #9ca3af !important;
+}
+
+.mat-calendar-body-cell {
+  color: #ffffff !important;
+}
+
+.mat-calendar-body-cell:hover {
+  background-color: rgba(0, 210, 106, 0.12) !important;
+}
+
+.mat-calendar-body-selected {
+  background-color: #00d26a !important;
+  color: #000000 !important;
+}
+
+.mat-calendar-body-today:not(.mat-calendar-body-selected) {
+  border-color: #00d26a !important;
+}
+
+.mat-datepicker-toggle {
+  color: #9ca3af !important;
+}
+
+.mat-mdc-form-field.mat-focused .mat-datepicker-toggle {
+  color: #00d26a !important;
+}
+
 /* Dialog styling for dark theme */
 .mat-mdc-dialog-container {
   background-color: #1e2328 !important;
   color: #ffffff !important;
   border: 1px solid #2d3439;
+  border-radius: 12px;
 }
 
 .mat-mdc-dialog-title {
   color: #ffffff !important;
+  font-weight: 600;
 }
 
 .mat-mdc-dialog-content {
+  color: #ffffff !important;
+}
+
+/* Override any Material dialog overlay backgrounds */
+.cdk-overlay-pane .mat-mdc-dialog-container {
+  background-color: #1e2328 !important;
+}
+
+.cdk-global-overlay-wrapper .mat-mdc-dialog-container {
+  background-color: #1e2328 !important;
+}
+
+/* Dialog content areas */
+.mat-mdc-dialog-container .mat-mdc-dialog-content {
+  background-color: transparent !important;
+}
+
+/* Ensure dialog headers and content areas follow theme */
+h1[mat-dialog-title], 
+h2[mat-dialog-title], 
+h3[mat-dialog-title], 
+h4[mat-dialog-title] {
+  color: #ffffff !important;
+}
+
+[mat-dialog-content] {
   color: #ffffff !important;
 }
 
