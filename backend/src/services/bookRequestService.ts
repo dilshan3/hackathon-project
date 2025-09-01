@@ -3,6 +3,7 @@ import { BookRequest, DatabaseBookRequest, CreateBookRequestRequest, Paged } fro
 import { ERROR_CODES } from '@/config/constants';
 import { BookService } from './bookService';
 import { UserService } from './userService';
+import { EmailNotificationService } from './emailNotificationService';
 
 // Helper function to execute queries with timeout
 const queryWithTimeout = async (query: string, params: any[], timeoutMs: number = 10000) => {
@@ -41,6 +42,20 @@ export class BookRequestService {
     
     const result = await queryWithTimeout(query, [bookId, requesterId, book.ownerId, startDate, durationDays, note]) as any;
     const dbRequest = result.rows[0];
+    
+    // Send email notification to book owner (MVP 1.1)
+    try {
+      const requester = await UserService.findById(requesterId);
+      await EmailNotificationService.sendBookRequestNotification(
+        book.ownerId,
+        'NEW_REQUEST',
+        book.title,
+        requester?.displayName
+      );
+    } catch (error) {
+      // Log error but don't fail the request
+      console.error('Failed to send email notification:', error);
+    }
     
     return this.transformDatabaseRequest(dbRequest);
   }
@@ -259,6 +274,17 @@ export class BookRequestService {
     
     const result = await queryWithTimeout(query, [requestId]) as any;
     const dbRequest = result.rows[0];
+    
+    // Send email notification to requester (MVP 1.1)
+    try {
+      await EmailNotificationService.sendBookRequestNotification(
+        request.requesterId,
+        'REQUEST_DECLINED',
+        request.book?.title || 'Book'
+      );
+    } catch (error) {
+      console.error('Failed to send email notification:', error);
+    }
     
     return this.transformDatabaseRequest(dbRequest);
   }

@@ -54,6 +54,13 @@ export const createMessageSchema = Joi.object({
   body: Joi.string().min(1).max(1000).required()
 });
 
+// MVP 1.1 Validation Schemas
+export const updateUserPreferencesSchema = Joi.object({
+  emailNotifications: Joi.boolean().optional(),
+  pushNotifications: Joi.boolean().optional(),
+  notificationFrequency: Joi.string().valid('IMMEDIATE', 'DAILY', 'WEEKLY').optional()
+}).min(1);
+
 export const paginationSchema = Joi.object({
   page: Joi.number().integer().min(1).default(1),
   pageSize: Joi.number().integer().min(1).max(100).default(20)

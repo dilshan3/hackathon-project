@@ -2,6 +2,9 @@ import pool from '@/config/database';
 import { Message, DatabaseMessage, CreateMessageRequest } from '@/types';
 import { ERROR_CODES } from '@/config/constants';
 import { BookRequestService } from './bookRequestService';
+import { EmailNotificationService } from './emailNotificationService';
+import { UserService } from './userService';
+import { BookService } from './bookService';
 
 // Helper function to execute queries with timeout
 const queryWithTimeout = async (query: string, params: any[], timeoutMs: number = 10000) => {
@@ -51,6 +54,26 @@ export class MessageService {
     
     const result = await queryWithTimeout(query, [requestId, senderId, body]) as any;
     const dbMessage = result.rows[0];
+    
+    // Send email notification to the other party (MVP 1.1)
+    try {
+      const request = await BookRequestService.getRequestById(requestId, senderId);
+      if (request) {
+        const otherUserId = request.requesterId === senderId ? request.ownerId : request.requesterId;
+        const sender = await UserService.findById(senderId);
+        const book = await BookService.getBookById(request.bookId);
+        
+        if (book) {
+          await EmailNotificationService.sendMessageNotification(
+            otherUserId,
+            book.title,
+            sender?.displayName || 'User'
+          );
+        }
+      }
+    } catch (error) {
+      console.error('Failed to send email notification:', error);
+    }
     
     return this.transformDatabaseMessage(dbMessage);
   }
