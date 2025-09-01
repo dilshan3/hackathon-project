@@ -9,6 +9,19 @@ export const APP_CONFIG = {
   RATE_LIMIT_MAX_REQUESTS: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100'),
 } as const;
 
+// Helper function to parse CORS origins
+export const getCorsOrigins = (): string | string[] => {
+  const corsOrigin = APP_CONFIG.CORS_ORIGIN;
+  
+  // If CORS_ORIGIN contains commas, split it into an array
+  if (corsOrigin.includes(',')) {
+    return corsOrigin.split(',').map(origin => origin.trim());
+  }
+  
+  // Return single origin as string
+  return corsOrigin;
+};
+
 export const ERROR_CODES = {
   VALIDATION_ERROR: 'VALIDATION_ERROR',
   UNAUTHORIZED: 'UNAUTHORIZED',

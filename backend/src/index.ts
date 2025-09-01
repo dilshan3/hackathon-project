@@ -6,13 +6,17 @@ import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 
-import { APP_CONFIG } from '@/config/constants';
+import { APP_CONFIG, getCorsOrigins } from '@/config/constants';
 import { errorHandler, notFoundHandler } from '@/middleware/errorHandler';
 
 // Import routes
 import authRoutes from '@/routes/auth';
 import meRoutes from '@/routes/me';
 import healthRoutes from '@/routes/health';
+import bookRoutes from '@/routes/books';
+import requestRoutes from '@/routes/requests';
+import counterRoutes from '@/routes/counters';
+import messageRoutes from '@/routes/messages';
 
 // Load environment variables
 dotenv.config();
@@ -24,7 +28,7 @@ app.use(helmet());
 
 // CORS configuration
 app.use(cors({
-  origin: APP_CONFIG.CORS_ORIGIN,
+  origin: getCorsOrigins(),
   credentials: true
 }));
 
@@ -61,6 +65,10 @@ app.use('/healthz', healthRoutes);
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/me', meRoutes);
+app.use('/api/books', bookRoutes);
+app.use('/api/requests', requestRoutes);
+app.use('/api/counters', counterRoutes);
+app.use('/api/messages', messageRoutes);
 
 // 404 handler
 app.use('*', notFoundHandler);
@@ -73,7 +81,7 @@ const PORT = APP_CONFIG.PORT;
 app.listen(PORT, () => {
   console.log(`🚀 ReadLoop Backend Server running on port ${PORT}`);
   console.log(`📊 Environment: ${APP_CONFIG.NODE_ENV}`);
-  console.log(`🔗 CORS Origin: ${APP_CONFIG.CORS_ORIGIN}`);
+  console.log(`🔗 CORS Origins: ${JSON.stringify(getCorsOrigins())}`);
   console.log(`⏰ Rate Limit: ${APP_CONFIG.RATE_LIMIT_MAX_REQUESTS} requests per ${APP_CONFIG.RATE_LIMIT_WINDOW_MS / 1000 / 60} minutes`);
 });
 

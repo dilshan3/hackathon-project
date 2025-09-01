@@ -25,12 +25,12 @@ export interface Book {
   id: string;
   ownerId: string;
   title: string;
-  author?: string;
-  genre?: string;
+  author?: string | undefined;
+  genre?: string | undefined;
   condition: BookCondition;
   status: BookStatus;
   createdAt: string;
-  owner?: Pick<User, "id" | "displayName" | "city">;
+  owner?: Pick<User, "id" | "displayName" | "city"> | undefined;
 }
 
 // Request Types
@@ -42,14 +42,14 @@ export interface BookRequest {
   requesterId: string;
   ownerId: string;
   status: RequestStatus;
-  note?: string;
-  startDate?: string;
-  durationDays?: number;
+  note?: string | undefined;
+  startDate?: string | undefined;
+  durationDays?: number | undefined;
   createdAt: string;
   updatedAt: string;
-  book?: Pick<Book, "id" | "title" | "author" | "condition">;
-  requester?: Pick<User, "id" | "displayName" | "city">;
-  owner?: Pick<User, "id" | "displayName" | "city">;
+  book?: Pick<Book, "id" | "title" | "author" | "condition"> | undefined;
+  requester?: Pick<User, "id" | "displayName" | "city"> | undefined;
+  owner?: Pick<User, "id" | "displayName" | "city"> | undefined;
 }
 
 // Pagination Types
