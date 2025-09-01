@@ -1,0 +1,144 @@
+/* Global Styles for ReadLoop */
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+body {
+  background-color: #fafafa;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Custom Material Theme Overrides */
+.mat-mdc-raised-button.mat-primary {
+  --mdc-protected-button-container-color: #4CAF50;
+  --mdc-protected-button-label-text-color: white;
+}
+
+.mat-mdc-outlined-button.mat-primary {
+  --mdc-outlined-button-outline-color: #4CAF50;
+  --mdc-outlined-button-label-text-color: #4CAF50;
+}
+
+.mat-mdc-button.mat-primary {
+  --mdc-text-button-label-text-color: #4CAF50;
+}
+
+/* Form Field Customizations */
+.mat-mdc-form-field.mat-focused .mat-mdc-form-field-focus-overlay {
+  background-color: rgba(76, 175, 80, 0.12);
+}
+
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: #4CAF50;
+}
+
+/* Utility Classes */
+.full-width {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-16 {
+  margin-top: 16px;
+}
+
+.mb-16 {
+  margin-bottom: 16px;
+}
+
+.p-24 {
+  padding: 24px;
+}
+
+/* Loading States */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mat-mdc-card {
+    margin: 8px;
+  }
+  
+  .hero-title {
+    font-size: 2rem !important;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem !important;
+  }
+}
+
+/* Animation Classes */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
