@@ -146,10 +146,25 @@ import { User } from '../../../models/user.model';
       padding: 24px;
       max-width: 1200px;
       margin: 0 auto;
+      background-color: #0f1419;
+      min-height: calc(100vh - 64px);
     }
 
     .search-card {
       margin-bottom: 32px;
+      background-color: #1e2328 !important;
+      border: 1px solid #2d3439;
+      color: #ffffff;
+    }
+
+    .search-card mat-card-header mat-card-title {
+      color: #ffffff;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .search-card mat-card-header mat-card-subtitle {
+      color: #9ca3af;
     }
 
     .search-form {
@@ -174,6 +189,8 @@ import { User } from '../../../models/user.model';
     .search-button {
       height: 56px;
       min-width: 120px;
+      background: #00d26a !important;
+      color: #000000 !important;
     }
 
     .results-header {
@@ -185,16 +202,21 @@ import { User } from '../../../models/user.model';
       align-items: center;
       gap: 8px;
       margin: 0;
-      color: #333;
+      color: #ffffff;
+      font-weight: 600;
     }
 
     .filter-indicator {
       display: flex;
       align-items: center;
       gap: 4px;
-      color: #666;
+      color: #9ca3af;
       font-size: 0.875rem;
       font-weight: normal;
+    }
+
+    .filter-indicator button {
+      color: #9ca3af;
     }
 
     .loading-container {
@@ -203,7 +225,11 @@ import { User } from '../../../models/user.model';
       align-items: center;
       gap: 16px;
       padding: 48px;
-      color: #666;
+      color: #9ca3af;
+    }
+
+    .loading-container mat-spinner {
+      --mdc-circular-progress-active-indicator-color: #00d26a;
     }
 
     .empty-state {
@@ -213,14 +239,18 @@ import { User } from '../../../models/user.model';
       gap: 16px;
       padding: 48px;
       text-align: center;
-      color: #666;
+      color: #9ca3af;
+    }
+
+    .empty-state h3 {
+      color: #ffffff;
     }
 
     .empty-icon {
       font-size: 4rem;
       width: 4rem;
       height: 4rem;
-      color: #ccc;
+      color: #4b5563;
     }
 
     .books-grid {
@@ -232,9 +262,27 @@ import { User } from '../../../models/user.model';
 
     mat-paginator {
       margin-top: 32px;
-      background: white;
+      background: #1e2328 !important;
+      border: 1px solid #2d3439;
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      color: #ffffff;
+    }
+
+    ::ng-deep .mat-mdc-paginator {
+      background: #1e2328 !important;
+      color: #ffffff;
+    }
+
+    ::ng-deep .mat-mdc-paginator .mat-mdc-paginator-range-label {
+      color: #ffffff;
+    }
+
+    ::ng-deep .mat-mdc-paginator .mat-mdc-icon-button {
+      color: #ffffff;
+    }
+
+    ::ng-deep .mat-mdc-paginator .mat-mdc-select {
+      color: #ffffff;
     }
 
     @media (max-width: 768px) {

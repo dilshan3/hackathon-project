@@ -89,7 +89,7 @@ import { UpdateProfileRequest } from '../../../models/auth-request.model';
   styles: [`
     .edit-profile-container {
       min-height: calc(100vh - 64px);
-      background: #f5f5f5;
+      background: #0f1419;
       padding: 24px;
     }
     
@@ -100,6 +100,19 @@ import { UpdateProfileRequest } from '../../../models/auth-request.model';
     
     .edit-profile-card {
       padding: 24px;
+      background-color: #1e2328 !important;
+      border: 1px solid #2d3439;
+      color: #ffffff;
+    }
+
+    .edit-profile-card mat-card-header mat-card-title {
+      color: #ffffff;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .edit-profile-card mat-card-header mat-card-subtitle {
+      color: #9ca3af;
     }
     
     .header-content {
@@ -110,7 +123,7 @@ import { UpdateProfileRequest } from '../../../models/auth-request.model';
     }
     
     .edit-icon {
-      color: #4CAF50;
+      color: #00d26a;
       font-size: 2rem;
       width: 2rem;
       height: 2rem;
@@ -134,18 +147,27 @@ import { UpdateProfileRequest } from '../../../models/auth-request.model';
     }
     
     .save-btn {
-      background: #4CAF50;
-      color: white;
+      background: #00d26a !important;
+      color: #000000 !important;
       height: 44px;
       font-weight: 600;
     }
     
     .save-btn:disabled {
-      background: #cccccc;
+      background: #4b5563 !important;
+      color: #9ca3af !important;
     }
     
     .cancel-btn {
-      color: #666;
+      color: #9ca3af !important;
+    }
+
+    .cancel-btn:hover {
+      color: #ffffff !important;
+    }
+
+    mat-spinner {
+      --mdc-circular-progress-active-indicator-color: #000000;
     }
     
     .loading-container {
@@ -155,7 +177,11 @@ import { UpdateProfileRequest } from '../../../models/auth-request.model';
       justify-content: center;
       min-height: 400px;
       gap: 16px;
-      color: #666;
+      color: #9ca3af;
+    }
+
+    .loading-container mat-spinner {
+      --mdc-circular-progress-active-indicator-color: #00d26a;
     }
     
     @media (max-width: 768px) {

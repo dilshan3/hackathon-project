@@ -170,6 +170,8 @@ import { User } from '../../../models/user.model';
       padding: 24px;
       max-width: 800px;
       margin: 0 auto;
+      min-height: calc(100vh - 64px);
+      background-color: #0f1419;
     }
 
     .loading-container,
@@ -180,14 +182,22 @@ import { User } from '../../../models/user.model';
       gap: 16px;
       padding: 64px;
       text-align: center;
-      color: #666;
+      color: #9ca3af;
+    }
+
+    .loading-container mat-spinner {
+      --mdc-circular-progress-active-indicator-color: #00d26a;
+    }
+
+    .error-state h3 {
+      color: #ffffff;
     }
 
     .error-icon {
       font-size: 4rem;
       width: 4rem;
       height: 4rem;
-      color: #f44336;
+      color: #ef4444;
     }
 
     .book-header {
@@ -198,7 +208,11 @@ import { User } from '../../../models/user.model';
     }
 
     .back-button {
-      color: #666;
+      color: #9ca3af;
+    }
+
+    .back-button:hover {
+      color: #ffffff;
     }
 
     .header-actions {
@@ -206,8 +220,15 @@ import { User } from '../../../models/user.model';
       gap: 8px;
     }
 
+    .header-actions button {
+      color: #00d26a !important;
+    }
+
     .book-card {
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background-color: #1e2328 !important;
+      border: 1px solid #2d3439;
+      color: #ffffff;
+      box-shadow: 0 8px 24px rgba(0, 210, 106, 0.15);
     }
 
     .book-info {
@@ -221,7 +242,7 @@ import { User } from '../../../models/user.model';
       margin: 0 0 24px 0;
       font-size: 2rem;
       font-weight: 600;
-      color: #333;
+      color: #ffffff;
       line-height: 1.2;
     }
 
@@ -236,14 +257,14 @@ import { User } from '../../../models/user.model';
       display: flex;
       align-items: center;
       gap: 8px;
-      color: #666;
+      color: #9ca3af;
     }
 
     .meta-item mat-icon {
       font-size: 1.2rem;
       width: 1.2rem;
       height: 1.2rem;
-      color: #999;
+      color: #00d26a;
     }
 
     .book-badges {
@@ -264,44 +285,53 @@ import { User } from '../../../models/user.model';
     }
 
     .condition-new { 
-      background-color: #e8f5e8 !important; 
-      color: #2e7d32 !important; 
+      background-color: rgba(0, 210, 106, 0.2) !important; 
+      color: #00d26a !important; 
+      border: 1px solid #00d26a;
     }
     .condition-good { 
-      background-color: #e3f2fd !important; 
-      color: #1976d2 !important; 
+      background-color: rgba(59, 130, 246, 0.2) !important; 
+      color: #3b82f6 !important; 
+      border: 1px solid #3b82f6;
     }
     .condition-fair { 
-      background-color: #fff3e0 !important; 
-      color: #f57c00 !important; 
+      background-color: rgba(245, 158, 11, 0.2) !important; 
+      color: #f59e0b !important; 
+      border: 1px solid #f59e0b;
     }
     .condition-poor { 
-      background-color: #ffebee !important; 
-      color: #d32f2f !important; 
+      background-color: rgba(239, 68, 68, 0.2) !important; 
+      color: #ef4444 !important; 
+      border: 1px solid #ef4444;
     }
 
     .status-available { 
-      background-color: #e8f5e8 !important; 
-      color: #2e7d32 !important; 
+      background-color: rgba(0, 210, 106, 0.2) !important; 
+      color: #00d26a !important; 
+      border: 1px solid #00d26a;
     }
     .status-lent { 
-      background-color: #fff3e0 !important; 
-      color: #f57c00 !important; 
+      background-color: rgba(245, 158, 11, 0.2) !important; 
+      color: #f59e0b !important; 
+      border: 1px solid #f59e0b;
     }
     .status-not_available { 
-      background-color: #ffebee !important; 
-      color: #d32f2f !important; 
+      background-color: rgba(239, 68, 68, 0.2) !important; 
+      color: #ef4444 !important; 
+      border: 1px solid #ef4444;
     }
 
     .book-owner {
       padding: 20px;
-      background: #f9f9f9;
+      background: #2d3439;
+      border: 1px solid #3d4349;
       border-radius: 8px;
     }
 
     .book-owner h3 {
       margin: 0 0 16px 0;
-      color: #333;
+      color: #ffffff;
+      font-weight: 600;
     }
 
     .owner-info {
@@ -314,7 +344,7 @@ import { User } from '../../../models/user.model';
       font-size: 2.5rem;
       width: 2.5rem;
       height: 2.5rem;
-      color: #4CAF50;
+      color: #00d26a;
     }
 
     .owner-details {
@@ -324,12 +354,12 @@ import { User } from '../../../models/user.model';
     .owner-name {
       margin: 0 0 4px 0;
       font-weight: 600;
-      color: #333;
+      color: #ffffff;
     }
 
     .owner-location {
       margin: 0;
-      color: #666;
+      color: #9ca3af;
       font-size: 0.875rem;
       display: flex;
       align-items: center;
@@ -340,16 +370,18 @@ import { User } from '../../../models/user.model';
       font-size: 1rem;
       width: 1rem;
       height: 1rem;
+      color: #00d26a;
     }
 
     .availability-section {
-      border-top: 1px solid #e0e0e0;
+      border-top: 1px solid #2d3439;
       padding-top: 24px;
     }
 
     .availability-section h3 {
       margin: 0 0 16px 0;
-      color: #333;
+      color: #ffffff;
+      font-weight: 600;
     }
 
     .availability-status {
@@ -365,40 +397,54 @@ import { User } from '../../../models/user.model';
     }
 
     .status-icon.status-available {
-      color: #4CAF50;
+      color: #00d26a;
     }
 
     .status-icon.status-lent {
-      color: #FF9800;
+      color: #f59e0b;
     }
 
     .status-icon.status-not_available {
-      color: #f44336;
+      color: #ef4444;
     }
 
     .status-text {
       margin: 0 0 4px 0;
       font-weight: 600;
-      color: #333;
+      color: #ffffff;
     }
 
     .status-description {
       margin: 0;
-      color: #666;
+      color: #9ca3af;
       font-size: 0.875rem;
     }
 
     .book-actions {
-      border-top: 1px solid #e0e0e0;
+      border-top: 1px solid #2d3439;
       padding: 24px;
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
       align-items: center;
+      background-color: #1e2328;
+    }
+
+    .book-actions button[mat-button] {
+      color: #9ca3af !important;
+    }
+
+    .book-actions button[mat-button]:hover {
+      color: #ffffff !important;
+    }
+
+    .book-actions button[mat-raised-button] {
+      background: #00d26a !important;
+      color: #000000 !important;
     }
 
     .unavailable-message {
-      color: #f44336;
+      color: #ef4444;
       font-size: 0.875rem;
       font-style: italic;
     }

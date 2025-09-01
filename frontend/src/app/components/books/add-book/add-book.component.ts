@@ -138,13 +138,26 @@ import { BookCondition, BookStatus } from '../../../models/book.model';
       justify-content: center;
       padding: 24px;
       min-height: calc(100vh - 64px);
-      background-color: #f5f5f5;
+      background-color: #0f1419;
     }
 
     .add-book-card {
       width: 100%;
       max-width: 600px;
       margin-top: 24px;
+      background-color: #1e2328 !important;
+      border: 1px solid #2d3439;
+      color: #ffffff;
+    }
+
+    .add-book-card mat-card-header mat-card-title {
+      color: #ffffff;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .add-book-card mat-card-header mat-card-subtitle {
+      color: #9ca3af;
     }
 
     .form-row {
@@ -164,15 +177,16 @@ import { BookCondition, BookStatus } from '../../../models/book.model';
     .condition-descriptions {
       margin-top: 24px;
       padding: 16px;
-      background-color: #f9f9f9;
+      background-color: #2d3439;
       border-radius: 8px;
-      border-left: 4px solid #4CAF50;
+      border-left: 4px solid #00d26a;
     }
 
     .condition-descriptions h4 {
       margin: 0 0 12px 0;
-      color: #333;
+      color: #ffffff;
       font-size: 1rem;
+      font-weight: 600;
     }
 
     .condition-descriptions ul {
@@ -182,8 +196,12 @@ import { BookCondition, BookStatus } from '../../../models/book.model';
 
     .condition-descriptions li {
       margin-bottom: 4px;
-      color: #666;
+      color: #9ca3af;
       font-size: 0.875rem;
+    }
+
+    .condition-descriptions li strong {
+      color: #00d26a;
     }
 
     mat-card-actions {
@@ -191,10 +209,25 @@ import { BookCondition, BookStatus } from '../../../models/book.model';
       justify-content: flex-end;
       gap: 12px;
       padding: 16px 24px;
+      background-color: #1e2328;
+    }
+
+    mat-card-actions button[mat-button] {
+      color: #9ca3af !important;
+    }
+
+    mat-card-actions button[mat-button]:hover {
+      color: #ffffff !important;
+    }
+
+    mat-card-actions button[mat-raised-button] {
+      background: #00d26a !important;
+      color: #000000 !important;
     }
 
     mat-spinner {
       margin-right: 8px;
+      --mdc-circular-progress-active-indicator-color: #000000;
     }
 
     @media (max-width: 768px) {

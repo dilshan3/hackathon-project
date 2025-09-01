@@ -204,16 +204,17 @@ import { Counters } from '../../models/common.model';
     .user-info {
       padding: 16px;
       border-bottom: 1px solid #2d3439;
+      background-color: #1e2328;
     }
     
     .user-name {
       font-weight: 600;
       margin: 0 0 4px 0;
-      color: #ffffff;
+      color: #ffffff !important;
     }
     
     .user-email {
-      color: #9ca3af;
+      color: #9ca3af !important;
       font-size: 0.875rem;
       margin: 0;
     }

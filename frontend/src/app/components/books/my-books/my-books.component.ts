@@ -103,6 +103,8 @@ import { Paged } from '../../../models/common.model';
       padding: 24px;
       max-width: 1200px;
       margin: 0 auto;
+      min-height: calc(100vh - 64px);
+      background-color: #0f1419;
     }
 
     .header {
@@ -115,19 +117,22 @@ import { Paged } from '../../../models/common.model';
 
     .title-section h1 {
       margin: 0 0 8px 0;
-      color: #333;
+      color: #ffffff;
       font-size: 2rem;
+      font-weight: 600;
     }
 
     .subtitle {
       margin: 0;
-      color: #666;
+      color: #9ca3af;
       font-size: 1rem;
     }
 
     .add-button {
       min-width: 160px;
       height: 48px;
+      background: #00d26a !important;
+      color: #000000 !important;
     }
 
     .add-button mat-icon {
@@ -140,7 +145,11 @@ import { Paged } from '../../../models/common.model';
       align-items: center;
       gap: 16px;
       padding: 64px;
-      color: #666;
+      color: #9ca3af;
+    }
+
+    .loading-container mat-spinner {
+      --mdc-circular-progress-active-indicator-color: #00d26a;
     }
 
     .empty-state {
@@ -150,20 +159,21 @@ import { Paged } from '../../../models/common.model';
       gap: 16px;
       padding: 64px;
       text-align: center;
-      color: #666;
+      color: #9ca3af;
     }
 
     .empty-icon {
       font-size: 4rem;
       width: 4rem;
       height: 4rem;
-      color: #ccc;
+      color: #4b5563;
     }
 
     .empty-state h3 {
       margin: 0;
-      color: #333;
+      color: #ffffff;
       font-size: 1.5rem;
+      font-weight: 600;
     }
 
     .empty-state p {
@@ -173,6 +183,8 @@ import { Paged } from '../../../models/common.model';
 
     .add-first-book {
       margin-top: 8px;
+      background: #00d26a !important;
+      color: #000000 !important;
     }
 
     .add-first-book mat-icon {
@@ -189,7 +201,8 @@ import { Paged } from '../../../models/common.model';
       align-items: center;
       margin-bottom: 24px;
       padding: 16px;
-      background: #f5f5f5;
+      background: #1e2328;
+      border: 1px solid #2d3439;
       border-radius: 8px;
       flex-wrap: wrap;
       gap: 8px;
@@ -197,12 +210,12 @@ import { Paged } from '../../../models/common.model';
 
     .total-count {
       font-weight: 600;
-      color: #333;
+      color: #ffffff;
       font-size: 1.1rem;
     }
 
     .status-breakdown {
-      color: #666;
+      color: #9ca3af;
       font-size: 0.9rem;
     }
 
@@ -215,9 +228,27 @@ import { Paged } from '../../../models/common.model';
 
     mat-paginator {
       margin-top: 32px;
-      background: white;
+      background: #1e2328 !important;
+      border: 1px solid #2d3439;
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      color: #ffffff;
+    }
+
+    ::ng-deep .mat-mdc-paginator {
+      background: #1e2328 !important;
+      color: #ffffff;
+    }
+
+    ::ng-deep .mat-mdc-paginator .mat-mdc-paginator-range-label {
+      color: #ffffff;
+    }
+
+    ::ng-deep .mat-mdc-paginator .mat-mdc-icon-button {
+      color: #ffffff;
+    }
+
+    ::ng-deep .mat-mdc-paginator .mat-mdc-select {
+      color: #ffffff;
     }
 
     @media (max-width: 768px) {
@@ -373,10 +404,11 @@ export class MyBooksComponent implements OnInit, OnDestroy {
       display: flex;
       align-items: center;
       gap: 8px;
+      color: #ffffff !important;
     }
 
     .warning-text {
-      color: #f44336;
+      color: #ef4444;
       font-size: 0.875rem;
     }
 
@@ -384,6 +416,19 @@ export class MyBooksComponent implements OnInit, OnDestroy {
       display: flex;
       justify-content: flex-end;
       gap: 12px;
+    }
+
+    mat-dialog-actions button[mat-button] {
+      color: #9ca3af !important;
+    }
+
+    mat-dialog-actions button[mat-button]:hover {
+      color: #ffffff !important;
+    }
+
+    mat-dialog-actions button[mat-raised-button] {
+      background: #ef4444 !important;
+      color: #ffffff !important;
     }
   `]
 })
